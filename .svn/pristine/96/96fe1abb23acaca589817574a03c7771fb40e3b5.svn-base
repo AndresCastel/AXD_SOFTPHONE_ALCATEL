@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://xmlapi.alcatel.com/messaging" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://xmlapi.alcatel.com/messaging/types" xmlns:tns2="http://xmlapi.alcatel.com/common" xmlns:impl="http://xmlapi.alcatel.com/messaging" targetNamespace="http://xmlapi.alcatel.com/messaging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlapi.alcatel.com/messaging/types">
+      <xsd:import namespace="http://xmlapi.alcatel.com/common" />
+      <xsd:import namespace="http://xmlapi.alcatel.com/messaging" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="IMCommands">
+        <xsd:sequence>
+          <xsd:element name="abort" type="xsd:boolean" />
+          <xsd:element name="append" type="xsd:boolean" />
+          <xsd:element name="callback" type="xsd:boolean" />
+          <xsd:element name="cancel" type="xsd:boolean" />
+          <xsd:element name="dial" type="xsd:boolean" />
+          <xsd:element name="forward" type="xsd:boolean" />
+          <xsd:element name="getDraft" type="xsd:boolean" />
+          <xsd:element name="hangup" type="xsd:boolean" />
+          <xsd:element name="login" type="xsd:boolean" />
+          <xsd:element name="logout" type="xsd:boolean" />
+          <xsd:element name="pause" type="xsd:boolean" />
+          <xsd:element name="play" type="xsd:boolean" />
+          <xsd:element name="record" type="xsd:boolean" />
+          <xsd:element name="send" type="xsd:boolean" />
+          <xsd:element name="stop" type="xsd:boolean" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="IMState">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="UNLOGGED" />
+          <xsd:enumeration value="LOGGED" />
+          <xsd:enumeration value="DIAL" />
+          <xsd:enumeration value="SESSION" />
+          <xsd:enumeration value="PLAY" />
+          <xsd:enumeration value="PLAY_PAUSED" />
+          <xsd:enumeration value="CALLBACK" />
+          <xsd:enumeration value="RECORD" />
+          <xsd:enumeration value="RECORD_IDLE" />
+          <xsd:enumeration value="PLAYREC" />
+          <xsd:enumeration value="PLAYREC_PAUSED" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMResult">
+        <xsd:sequence>
+          <xsd:element name="commands" nillable="true" type="tns1:IMCommands" />
+          <xsd:element name="state" nillable="true" type="tns1:IMState" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlcSessionResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:IMResult">
+            <xsd:sequence>
+              <xsd:element name="sessionId" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="IMError">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="VOICEMAIL_SERVER_UNREACHABLE" />
+          <xsd:enumeration value="VOICEMAIL_SERVER_ERROR" />
+          <xsd:enumeration value="VOICEMAIL_DRIVER_ERROR" />
+          <xsd:enumeration value="DATA_ACCESS_FAILURE" />
+          <xsd:enumeration value="INVALID_STATE" />
+          <xsd:enumeration value="UNKNOWN_USER" />
+          <xsd:enumeration value="UNKNOWN_ACCOUNT" />
+          <xsd:enumeration value="BAD_LOGIN" />
+          <xsd:enumeration value="INVALID_SESSION" />
+          <xsd:enumeration value="INVALID_PARAMETER" />
+          <xsd:enumeration value="OUT_OF_PORTS" />
+          <xsd:enumeration value="TOO_MANY_SESSIONS" />
+          <xsd:enumeration value="ABORTED" />
+          <xsd:enumeration value="NO_MESSAGE" />
+          <xsd:enumeration value="DEPRECATED" />
+          <xsd:enumeration value="CONCURRENT_TIMEOUT" />
+          <xsd:enumeration value="WRONG_NUMBER" />
+          <xsd:enumeration value="CONGESTED" />
+          <xsd:enumeration value="NO_LINK" />
+          <xsd:enumeration value="NO_HARDWARE" />
+          <xsd:enumeration value="DND" />
+          <xsd:enumeration value="FORWARDED_VOICEMAIL" />
+          <xsd:enumeration value="FORWARDED_VOICEMAIL_BUSY" />
+          <xsd:enumeration value="FORWARDED_VOICEMAIL_NO_ANSWER" />
+          <xsd:enumeration value="FORWARDED_EXTENSION" />
+          <xsd:enumeration value="NO_ANSWER" />
+          <xsd:enumeration value="BUSY" />
+          <xsd:enumeration value="UNREACHABLE" />
+          <xsd:enumeration value="RELEASED" />
+          <xsd:enumeration value="UNAUTHORIZED" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMException">
+        <xsd:sequence>
+          <xsd:element name="error" nillable="true" type="tns1:IMError" />
+          <xsd:element name="message" nillable="true" type="xsd:string" />
+          <xsd:element name="state" nillable="true" type="tns1:IMState" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IMPlayResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:IMResult">
+            <xsd:sequence>
+              <xsd:element name="position" type="xsd:int" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="IMSendResultCause">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="DND" />
+          <xsd:enumeration value="FULL" />
+          <xsd:enumeration value="UNKNOWN" />
+          <xsd:enumeration value="SMTP" />
+          <xsd:enumeration value="DUPLICATE" />
+          <xsd:enumeration value="PARTIAL" />
+          <xsd:enumeration value="OTHER" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMSendResultItem">
+        <xsd:sequence>
+          <xsd:element name="cause" nillable="true" type="tns1:IMSendResultCause" />
+          <xsd:element name="key" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IMSendResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:IMResult">
+            <xsd:sequence>
+              <xsd:element name="destinations" nillable="true" type="impl:ArrayOf_tns2_IMSendResultItem" />
+              <xsd:element name="embeddedDestinations" nillable="true" type="impl:ArrayOf_tns2_IMSendResultItem" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="IMGetResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:IMResult">
+            <xsd:sequence>
+              <xsd:element name="urls" nillable="true" type="impl:ArrayOf_xsd_string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="IMPauseResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:IMResult">
+            <xsd:sequence>
+              <xsd:element name="position" type="xsd:int" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="IMMsgType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="VOICE" />
+          <xsd:enumeration value="FAX" />
+          <xsd:enumeration value="EMAIL" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMMsgCounters">
+        <xsd:sequence>
+          <xsd:element name="newEmail" type="xsd:int" />
+          <xsd:element name="newFax" type="xsd:int" />
+          <xsd:element name="newVoice" type="xsd:int" />
+          <xsd:element name="totalEmail" type="xsd:int" />
+          <xsd:element name="totalFax" type="xsd:int" />
+          <xsd:element name="totalVoice" type="xsd:int" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="IMMsgField">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="MSGID" />
+          <xsd:enumeration value="TYPE" />
+          <xsd:enumeration value="DATE" />
+          <xsd:enumeration value="FROM" />
+          <xsd:enumeration value="NAME" />
+          <xsd:enumeration value="SUBJECT" />
+          <xsd:enumeration value="UNREAD" />
+          <xsd:enumeration value="PRIORITY" />
+          <xsd:enumeration value="REPLYALLOWED" />
+          <xsd:enumeration value="LENGTH" />
+          <xsd:enumeration value="SENSITIVITY" />
+          <xsd:enumeration value="FORWARDABLE" />
+          <xsd:enumeration value="CALLABLE" />
+          <xsd:enumeration value="EXPIRATION" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMMsgSortingField">
+        <xsd:sequence>
+          <xsd:element name="ascend" type="xsd:boolean" />
+          <xsd:element name="field" nillable="true" type="tns1:IMMsgField" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="IMMsgPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="LOW" />
+          <xsd:enumeration value="NORMAL" />
+          <xsd:enumeration value="HIGH" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="IMMsgSensitivity">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="PUBLIC" />
+          <xsd:enumeration value="ORGANIZATION" />
+          <xsd:enumeration value="PRIVATE" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IMMsgHeader">
+        <xsd:sequence>
+          <xsd:element name="callable" type="xsd:boolean" />
+          <xsd:element name="date" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="expiration" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="forwardable" type="xsd:boolean" />
+          <xsd:element name="from" nillable="true" type="xsd:string" />
+          <xsd:element name="length" type="xsd:int" />
+          <xsd:element name="msgId" nillable="true" type="xsd:string" />
+          <xsd:element name="name" nillable="true" type="xsd:string" />
+          <xsd:element name="priority" nillable="true" type="tns1:IMMsgPriority" />
+          <xsd:element name="replyAllowed" type="xsd:boolean" />
+          <xsd:element name="sensitivity" nillable="true" type="tns1:IMMsgSensitivity" />
+          <xsd:element name="subject" nillable="true" type="xsd:string" />
+          <xsd:element name="type" nillable="true" type="tns1:IMMsgType" />
+          <xsd:element name="unRead" type="xsd:boolean" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IMCapabilities">
+        <xsd:sequence>
+          <xsd:element name="append" type="xsd:boolean" />
+          <xsd:element name="callBack" type="xsd:boolean" />
+          <xsd:element name="callBackInterruptible" type="xsd:boolean" />
+          <xsd:element name="delete" type="xsd:boolean" />
+          <xsd:element name="dialInterruptible" type="xsd:boolean" />
+          <xsd:element name="events" type="xsd:boolean" />
+          <xsd:element name="forward" type="xsd:boolean" />
+          <xsd:element name="get" type="xsd:boolean" />
+          <xsd:element name="getDraft" type="xsd:boolean" />
+          <xsd:element name="hangup" type="xsd:boolean" />
+          <xsd:element name="list" type="xsd:boolean" />
+          <xsd:element name="msgEmail" type="xsd:boolean" />
+          <xsd:element name="msgFax" type="xsd:boolean" />
+          <xsd:element name="msgNotifications" type="xsd:boolean" />
+          <xsd:element name="msgVoice" type="xsd:boolean" />
+          <xsd:element name="nomadic" type="xsd:boolean" />
+          <xsd:element name="nonBlockingCallBack" type="xsd:boolean" />
+          <xsd:element name="nonBlockingDial" type="xsd:boolean" />
+          <xsd:element name="pause" type="xsd:boolean" />
+          <xsd:element name="play" type="xsd:boolean" />
+          <xsd:element name="playOffsetAbsolute" type="xsd:boolean" />
+          <xsd:element name="playOffsetRelative" type="xsd:boolean" />
+          <xsd:element name="record" type="xsd:boolean" />
+          <xsd:element name="recordInterruptible" type="xsd:boolean" />
+          <xsd:element name="sendByEmail" type="xsd:boolean" />
+          <xsd:element name="sendByMailboxNumber" type="xsd:boolean" />
+          <xsd:element name="sendByVpimAddress" type="xsd:boolean" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IMDestination">
+        <xsd:sequence>
+          <xsd:element name="emailAddress" nillable="true" type="xsd:string" />
+          <xsd:element name="key" nillable="true" type="xsd:string" />
+          <xsd:element name="mailboxNumber" nillable="true" type="xsd:string" />
+          <xsd:element name="vpimAddress" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IMSendHeaders">
+        <xsd:sequence>
+          <xsd:element name="priority" nillable="true" type="tns1:IMMsgPriority" />
+          <xsd:element name="readReceipt" type="xsd:boolean" />
+          <xsd:element name="sensitivity" nillable="true" type="tns1:IMMsgSensitivity" />
+          <xsd:element name="subject" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlapi.alcatel.com/common">
+      <xsd:import namespace="http://xmlapi.alcatel.com/messaging" />
+      <xsd:import namespace="http://xmlapi.alcatel.com/messaging/types" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:simpleType name="AlcServiceError">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="BAD_DATA_ACCESS_CONNECTION" />
+          <xsd:enumeration value="BAD_FRAMEWORK_SESSION_IDENTIFIER" />
+          <xsd:enumeration value="INVALID_OPERATION" />
+          <xsd:enumeration value="INVALID_SVC_SESSION_ID" />
+          <xsd:enumeration value="LICENSE_REQUIRED" />
+          <xsd:enumeration value="LOGIN_REQUIRED" />
+          <xsd:enumeration value="SERVICE_UNAVAILABLE" />
+          <xsd:enumeration value="SOAP_ACTION_REQUIRED" />
+          <xsd:enumeration value="BAD_PARAMETER_VALUE" />
+          <xsd:enumeration value="UNAUTHORIZED" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="AlcServiceException">
+        <xsd:sequence>
+          <xsd:element name="fault" nillable="true" type="tns2:AlcServiceError" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlapi.alcatel.com/messaging">
+      <xsd:import namespace="http://xmlapi.alcatel.com/common" />
+      <xsd:import namespace="http://xmlapi.alcatel.com/messaging/types" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="ArrayOf_tns2_IMSendResultItem">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns1:IMSendResultItem[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_xsd_string">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns2_IMMsgType">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns1:IMMsgType[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns2_IMMsgSortingField">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns1:IMMsgSortingField[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns2_IMMsgHeader">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns1:IMMsgHeader[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns2_IMDestination">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns1:IMDestination[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getCountersResponse">
+    <wsdl:part name="getCountersReturn" type="tns1:IMMsgCounters" />
+  </wsdl:message>
+  <wsdl:message name="sendResponse">
+    <wsdl:part name="sendReturn" type="tns1:IMSendResult" />
+  </wsdl:message>
+  <wsdl:message name="appendRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="loginResponse">
+    <wsdl:part name="loginReturn" type="tns1:AlcSessionResult" />
+  </wsdl:message>
+  <wsdl:message name="playRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+    <wsdl:part name="pMessageId" type="xsd:string" />
+    <wsdl:part name="pOffset" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="stopResponse">
+    <wsdl:part name="stopReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="getDraftUrlRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="IMException">
+    <wsdl:part name="imFault" type="tns1:IMException" />
+  </wsdl:message>
+  <wsdl:message name="getCapabilitiesResponse">
+    <wsdl:part name="getCapabilitiesReturn" type="tns1:IMCapabilities" />
+  </wsdl:message>
+  <wsdl:message name="pauseResponse">
+    <wsdl:part name="pauseReturn" type="tns1:IMPauseResult" />
+  </wsdl:message>
+  <wsdl:message name="getStatusResponse">
+    <wsdl:part name="getStatusReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="getMessagesResponse">
+    <wsdl:part name="getMessagesReturn" type="impl:ArrayOf_tns2_IMMsgHeader" />
+  </wsdl:message>
+  <wsdl:message name="cancelResponse">
+    <wsdl:part name="cancelReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="setOrderRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pSortingFields" type="impl:ArrayOf_tns2_IMMsgSortingField" />
+  </wsdl:message>
+  <wsdl:message name="loadMessagesRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pFilters" type="impl:ArrayOf_tns2_IMMsgType" />
+  </wsdl:message>
+  <wsdl:message name="pauseRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="callbackResponse">
+    <wsdl:part name="callbackReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="setFilterResponse" />
+  <wsdl:message name="getMessageUrlResponse">
+    <wsdl:part name="getMessageUrlReturn" type="impl:ArrayOf_xsd_string" />
+  </wsdl:message>
+  <wsdl:message name="hangupResponse">
+    <wsdl:part name="hangupReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="dialResponse">
+    <wsdl:part name="dialReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="recordResponse">
+    <wsdl:part name="recordReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="stopRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="setFilterRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pFilters" type="impl:ArrayOf_tns2_IMMsgType" />
+  </wsdl:message>
+  <wsdl:message name="cancelRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="callbackRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+    <wsdl:part name="pMessageId" type="xsd:string" />
+    <wsdl:part name="pBlocking" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="deleteMessagesRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pMessageIdList" type="impl:ArrayOf_xsd_string" />
+  </wsdl:message>
+  <wsdl:message name="getIndexOfResponse">
+    <wsdl:part name="getIndexOfReturn" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="abortResponse" />
+  <wsdl:message name="getStatusRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="loadMessagesResponse">
+    <wsdl:part name="loadMessagesReturn" type="tns1:IMMsgCounters" />
+  </wsdl:message>
+  <wsdl:message name="loginRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pVoiceMailPassword" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="forwardResponse">
+    <wsdl:part name="forwardReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="logoutRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getMessageUrlRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pMessageId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="abortRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="playResponse">
+    <wsdl:part name="playReturn" type="tns1:IMPlayResult" />
+  </wsdl:message>
+  <wsdl:message name="forwardRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+    <wsdl:part name="pMessageId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getCapabilitiesRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getIndexOfRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pMessageId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="setOrderResponse" />
+  <wsdl:message name="getCountersRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="logoutResponse" />
+  <wsdl:message name="dialRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+    <wsdl:part name="pBlocking" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="appendResponse">
+    <wsdl:part name="appendReturn" type="tns1:IMResult" />
+  </wsdl:message>
+  <wsdl:message name="getDraftUrlResponse">
+    <wsdl:part name="getDraftUrlReturn" type="tns1:IMGetResult" />
+  </wsdl:message>
+  <wsdl:message name="sendRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pDestinations" type="impl:ArrayOf_tns2_IMDestination" />
+    <wsdl:part name="pHeaders" type="tns1:IMSendHeaders" />
+  </wsdl:message>
+  <wsdl:message name="deleteMessagesResponse" />
+  <wsdl:message name="hangupRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="recordRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pPhoneNumber" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteAllMessagesRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteAllMessagesResponse" />
+  <wsdl:message name="AlcServiceException">
+    <wsdl:part name="fault" type="tns2:AlcServiceException" />
+  </wsdl:message>
+  <wsdl:message name="getMessagesRequest">
+    <wsdl:part name="pFwSessionId" type="xsd:string" />
+    <wsdl:part name="pSvcSessionId" type="xsd:string" />
+    <wsdl:part name="pIndex" type="xsd:int" />
+    <wsdl:part name="pNbItems" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:portType name="XmlMessaging">
+    <wsdl:operation name="login" parameterOrder="pFwSessionId pVoiceMailPassword pPhoneNumber">
+      <wsdl:input name="loginRequest" message="impl:loginRequest" />
+      <wsdl:output name="loginResponse" message="impl:loginResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="logout" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="logoutRequest" message="impl:logoutRequest" />
+      <wsdl:output name="logoutResponse" message="impl:logoutResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="dial" parameterOrder="pFwSessionId pSvcSessionId pPhoneNumber pBlocking">
+      <wsdl:input name="dialRequest" message="impl:dialRequest" />
+      <wsdl:output name="dialResponse" message="impl:dialResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="pause" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="pauseRequest" message="impl:pauseRequest" />
+      <wsdl:output name="pauseResponse" message="impl:pauseResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="record" parameterOrder="pFwSessionId pSvcSessionId pPhoneNumber">
+      <wsdl:input name="recordRequest" message="impl:recordRequest" />
+      <wsdl:output name="recordResponse" message="impl:recordResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="forward" parameterOrder="pFwSessionId pSvcSessionId pPhoneNumber pMessageId">
+      <wsdl:input name="forwardRequest" message="impl:forwardRequest" />
+      <wsdl:output name="forwardResponse" message="impl:forwardResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="hangup" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="hangupRequest" message="impl:hangupRequest" />
+      <wsdl:output name="hangupResponse" message="impl:hangupResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="loadMessages" parameterOrder="pFwSessionId pSvcSessionId pFilters">
+      <wsdl:input name="loadMessagesRequest" message="impl:loadMessagesRequest" />
+      <wsdl:output name="loadMessagesResponse" message="impl:loadMessagesResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getCounters" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="getCountersRequest" message="impl:getCountersRequest" />
+      <wsdl:output name="getCountersResponse" message="impl:getCountersResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="setOrder" parameterOrder="pFwSessionId pSvcSessionId pSortingFields">
+      <wsdl:input name="setOrderRequest" message="impl:setOrderRequest" />
+      <wsdl:output name="setOrderResponse" message="impl:setOrderResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessages" parameterOrder="pFwSessionId pSvcSessionId pIndex pNbItems">
+      <wsdl:input name="getMessagesRequest" message="impl:getMessagesRequest" />
+      <wsdl:output name="getMessagesResponse" message="impl:getMessagesResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteMessages" parameterOrder="pFwSessionId pSvcSessionId pMessageIdList">
+      <wsdl:input name="deleteMessagesRequest" message="impl:deleteMessagesRequest" />
+      <wsdl:output name="deleteMessagesResponse" message="impl:deleteMessagesResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAllMessages" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="deleteAllMessagesRequest" message="impl:deleteAllMessagesRequest" />
+      <wsdl:output name="deleteAllMessagesResponse" message="impl:deleteAllMessagesResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessageUrl" parameterOrder="pFwSessionId pSvcSessionId pMessageId">
+      <wsdl:input name="getMessageUrlRequest" message="impl:getMessageUrlRequest" />
+      <wsdl:output name="getMessageUrlResponse" message="impl:getMessageUrlResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getDraftUrl" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="getDraftUrlRequest" message="impl:getDraftUrlRequest" />
+      <wsdl:output name="getDraftUrlResponse" message="impl:getDraftUrlResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="append" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="appendRequest" message="impl:appendRequest" />
+      <wsdl:output name="appendResponse" message="impl:appendResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="stop" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="stopRequest" message="impl:stopRequest" />
+      <wsdl:output name="stopResponse" message="impl:stopResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="setFilter" parameterOrder="pFwSessionId pSvcSessionId pFilters">
+      <wsdl:input name="setFilterRequest" message="impl:setFilterRequest" />
+      <wsdl:output name="setFilterResponse" message="impl:setFilterResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getCapabilities" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="getCapabilitiesRequest" message="impl:getCapabilitiesRequest" />
+      <wsdl:output name="getCapabilitiesResponse" message="impl:getCapabilitiesResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="cancel" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="cancelRequest" message="impl:cancelRequest" />
+      <wsdl:output name="cancelResponse" message="impl:cancelResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getIndexOf" parameterOrder="pFwSessionId pSvcSessionId pMessageId">
+      <wsdl:input name="getIndexOfRequest" message="impl:getIndexOfRequest" />
+      <wsdl:output name="getIndexOfResponse" message="impl:getIndexOfResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="abort" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="abortRequest" message="impl:abortRequest" />
+      <wsdl:output name="abortResponse" message="impl:abortResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="getStatus" parameterOrder="pFwSessionId pSvcSessionId">
+      <wsdl:input name="getStatusRequest" message="impl:getStatusRequest" />
+      <wsdl:output name="getStatusResponse" message="impl:getStatusResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="callback" parameterOrder="pFwSessionId pSvcSessionId pPhoneNumber pMessageId pBlocking">
+      <wsdl:input name="callbackRequest" message="impl:callbackRequest" />
+      <wsdl:output name="callbackResponse" message="impl:callbackResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="play" parameterOrder="pFwSessionId pSvcSessionId pPhoneNumber pMessageId pOffset">
+      <wsdl:input name="playRequest" message="impl:playRequest" />
+      <wsdl:output name="playResponse" message="impl:playResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="send" parameterOrder="pFwSessionId pSvcSessionId pDestinations pHeaders">
+      <wsdl:input name="sendRequest" message="impl:sendRequest" />
+      <wsdl:output name="sendResponse" message="impl:sendResponse" />
+      <wsdl:fault name="IMException" message="impl:IMException" />
+      <wsdl:fault name="AlcServiceException" message="impl:AlcServiceException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="XmlMessagingSoapBinding" type="impl:XmlMessaging">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="login">
+      <wsdlsoap:operation soapAction="login" />
+      <wsdl:input name="loginRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="loginResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="logout">
+      <wsdlsoap:operation soapAction="logout" />
+      <wsdl:input name="logoutRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="logoutResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="dial">
+      <wsdlsoap:operation soapAction="dial" />
+      <wsdl:input name="dialRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="dialResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="pause">
+      <wsdlsoap:operation soapAction="pause" />
+      <wsdl:input name="pauseRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="pauseResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="record">
+      <wsdlsoap:operation soapAction="record" />
+      <wsdl:input name="recordRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="recordResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="forward">
+      <wsdlsoap:operation soapAction="forward" />
+      <wsdl:input name="forwardRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="forwardResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="hangup">
+      <wsdlsoap:operation soapAction="hangup" />
+      <wsdl:input name="hangupRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="hangupResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="loadMessages">
+      <wsdlsoap:operation soapAction="loadMessages" />
+      <wsdl:input name="loadMessagesRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="loadMessagesResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCounters">
+      <wsdlsoap:operation soapAction="getCounters" />
+      <wsdl:input name="getCountersRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getCountersResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setOrder">
+      <wsdlsoap:operation soapAction="setOrder" />
+      <wsdl:input name="setOrderRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setOrderResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getMessages">
+      <wsdlsoap:operation soapAction="getMessages" />
+      <wsdl:input name="getMessagesRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getMessagesResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteMessages">
+      <wsdlsoap:operation soapAction="deleteMessages" />
+      <wsdl:input name="deleteMessagesRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="deleteMessagesResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAllMessages">
+      <wsdlsoap:operation soapAction="deleteAllMessages" />
+      <wsdl:input name="deleteAllMessagesRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="deleteAllMessagesResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getMessageUrl">
+      <wsdlsoap:operation soapAction="getMessageUrl" />
+      <wsdl:input name="getMessageUrlRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getMessageUrlResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getDraftUrl">
+      <wsdlsoap:operation soapAction="getDraftUrl" />
+      <wsdl:input name="getDraftUrlRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getDraftUrlResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="append">
+      <wsdlsoap:operation soapAction="append" />
+      <wsdl:input name="appendRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="appendResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="stop">
+      <wsdlsoap:operation soapAction="stop" />
+      <wsdl:input name="stopRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="stopResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setFilter">
+      <wsdlsoap:operation soapAction="setFilter" />
+      <wsdl:input name="setFilterRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setFilterResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCapabilities">
+      <wsdlsoap:operation soapAction="getCapabilities" />
+      <wsdl:input name="getCapabilitiesRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getCapabilitiesResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdlsoap:operation soapAction="cancel" />
+      <wsdl:input name="cancelRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="cancelResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIndexOf">
+      <wsdlsoap:operation soapAction="getIndexOf" />
+      <wsdl:input name="getIndexOfRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getIndexOfResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="abort">
+      <wsdlsoap:operation soapAction="abort" />
+      <wsdl:input name="abortRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="abortResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getStatus">
+      <wsdlsoap:operation soapAction="getStatus" />
+      <wsdl:input name="getStatusRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getStatusResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="callback">
+      <wsdlsoap:operation soapAction="callback" />
+      <wsdl:input name="callbackRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="callbackResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="play">
+      <wsdlsoap:operation soapAction="play" />
+      <wsdl:input name="playRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="playResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="send">
+      <wsdlsoap:operation soapAction="send" />
+      <wsdl:input name="sendRequest">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="sendResponse">
+        <wsdlsoap:body use="encoded" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="IMException">
+        <wsdlsoap:fault use="encoded" name="IMException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+      <wsdl:fault name="AlcServiceException">
+        <wsdlsoap:fault use="encoded" name="AlcServiceException" namespace="http://xmlapi.alcatel.com/messaging" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XmlMessagingService">
+    <wsdl:port name="XmlMessaging" binding="impl:XmlMessagingSoapBinding">
+      <wsdlsoap:address location="http://192.168.100.199/api/services/5.0/XMLMessaging" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

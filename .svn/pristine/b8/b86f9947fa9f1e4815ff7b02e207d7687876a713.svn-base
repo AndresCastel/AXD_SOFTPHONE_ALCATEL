@@ -1,0 +1,205 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Axede.Utilidades;
+using Axede.WPF.Softphone.Applications.PortSIP_Class;
+using Axede.WPF.Softphone.Applications.UtilControls.ModalMessageBox;
+
+namespace Axede.WPF.Softphone.Applications.UtilControls.PopUp
+{
+    /// <summary>
+    /// Interaction logic for PopControl.xaml
+    /// </summary>
+    public partial class ControlVideo : Window
+    {
+        private ClassMethodUtil _classutil;
+        public ClassMethodUtil Classutil
+        {
+            get { return _classutil; }
+            set { _classutil = value; }
+        }
+        Point _Poin;
+        double ancho = 0;
+        int a=0, s=0;       
+        public bool _SIPinited = false;
+        public Session[] _CallSessionsG;
+        private PortSIPCore _core;
+        private bool _BanMoveWindow = false;
+        public int _CurrentlyLineG;
+        public int _sessionId;
+        public ControlVideo()
+        {
+            InitializeComponent();
+        }
+        public ControlVideo(Point poi, ref PortSIPCore _ccore)
+        {
+            InitializeComponent();
+            _Poin = poi;
+            _core = _ccore;
+            localVideoWindow.Visibility = Visibility.Hidden;
+          //  this.ContenidoUC.Content = UC;
+            UpdatePosition(poi);
+            _core.setLocalVideoWindow(localVideoPanel.Handle);
+            localVideoWindow.Visibility = Visibility.Visible;
+            _core.viewLocalVideo(true);
+
+          //  _ccore.viewLocalVideo(true);
+           
+        }
+        public void SetVideoRemote(int _sessionId)
+        {
+            _core.setRemoteVideoWindow(_sessionId, remoteVideoPanel.Handle);
+        }
+
+        public int createConference(VIDEO_RESOLUTION videoResolution, bool estado)
+        {
+            int rt = _core.createConference(remoteVideoPanel.Handle, videoResolution, estado);
+            return rt;
+        }
+
+        public void UpdatePosition(Point poi)
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+            if (!_BanMoveWindow)
+            {
+                this.Left = poi.X - 450;
+                this.Top = poi.Y;
+            }
+            _Poin = poi;
+        }
+
+        private void ValidatePosition()
+        {
+            double RestX = _Poin.X - this.RestoreBounds.X - 531;
+            double RestY = _Poin.Y - this.RestoreBounds.Y;
+            if ((RestX <= 20 && RestY <=50))
+            {
+                _BanMoveWindow = false;
+                UpdatePosition(_Poin);
+            }
+        }
+
+        private void Window_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            _BanMoveWindow = true;
+            ValidatePosition();
+        }      
+
+        private void CambioTamañoEfecto()
+        {
+            //if (_BanderaLocalTamaño)
+            //{
+                ancho = localVideoWindow.Width;
+                for (int i = (int)localVideoWindow.Width; i < ancho; i++)
+                {
+                    localVideoWindow.Width = i;
+                    localVideoWindow.Height = i;
+                    a = i;
+                }
+            //}
+            //else
+            //{
+            //    for (int s = a; s > ancho; s--)
+            //    {
+            //        localVideoWindow.Width = s;
+            //        localVideoWindow.Height = s;
+            //    }
+            //}
+        }
+
+        private void ButtonSendVideo_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SIPinited == false)
+            {
+                return;
+            }
+
+            if (_CallSessionsG[_CurrentlyLineG].getSessionState() == false)
+            {
+                return;
+            }
+
+            int rt = _core.startVideoSending(_CallSessionsG[_CurrentlyLineG].getSessionId(), true);
+            if (rt != 0)
+            {
+                MessageBoxModal.Show(Classutil.ResolveOwnerWindow(), "Fallo al Intentar Enviar Video.", "Informacion", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.Cancel, true);              
+            }         
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {            
+            this.Close();
+        }
+
+        private void Minimizar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+           // this.WindowState = WindowState.Minimized;          
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+
+                DragMove();
+            }
+            catch (Exception ex)
+            {
+
+                // throw ex;
+            }
+        }
+
+        private void ExpandCollapseToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExpandCollapseToggle.IsChecked.Value)
+            {
+                localVideoWindow.Visibility = Visibility.Visible;
+                _core.viewLocalVideo(true);
+                remoteVideoWindow.Width = 255;
+            }
+            else
+            {
+                _core.viewLocalVideo(false);
+                localVideoPanel.Refresh();
+                remoteVideoWindow.Width = 376;
+                localVideoWindow.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void ButtonStopVideo_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SIPinited == false)
+            {
+                return;
+            }
+
+            if (_CallSessionsG[_CurrentlyLineG].getSessionState() == false)
+            {
+                return;
+            }
+
+            _core.startVideoSending(_CallSessionsG[_CurrentlyLineG].getSessionId(), false);
+        }
+
+        private void Border_Loaded(object sender, RoutedEventArgs e)
+        {
+                this.WindowState = System.Windows.WindowState.Normal;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+        }
+    }
+}

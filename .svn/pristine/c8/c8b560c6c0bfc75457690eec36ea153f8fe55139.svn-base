@@ -1,0 +1,510 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Axede.DataObjects.Interface;
+using System.Data;
+using System.Data.Common;
+using System.Xml;
+using Axede.Utilidades.Enums;
+using Axede.Global;
+using Axede.Exception;
+using Axede.Utilidades;
+using Axede.Mensajes;
+using Axede.DataObjects.Entities;
+using System.Xml.Serialization;
+using System.Reflection;
+using System.Transactions;
+using Axede.BussinesObject.Application.Dto;
+using Axede.BussinesObject.Application.Entities;
+
+
+namespace Axede.DataObjects.Dao.MySQL
+{
+    public partial class MySQL_CommonDao : BaseDatos, ICommonDao
+    {
+        #region Definiciones
+
+          
+
+        #endregion
+
+       #region Publicas
+
+        public bool InsertaUsuario(string oUsuario, int oRol) 
+        {
+            bool bUsuarioInsertado = false;
+
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.InsertaUsuario);
+                _database.AddInParameter(dbcommand, "sUsuario", DbType.String, oUsuario);
+                _database.AddInParameter(dbcommand, "iRol", DbType.Int32, oRol);
+                _database.ExecuteNonQuery(dbcommand);
+
+                bUsuarioInsertado = true;
+
+            }
+            catch (System.Exception oException)
+            {
+
+                StringBuilder sMensaje = new StringBuilder();
+                sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.InsertaUsuario);
+                sMensaje.AppendLine("Parametro   : " + oUsuario + " - " + oRol.ToString());
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+            return bUsuarioInsertado;
+        }
+
+        public bool EliminaUsuario(int oIdUsuario) 
+        {
+            bool bUsuarioEliminado = false;
+
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.EliminaUsuario);
+                _database.AddInParameter(dbcommand, "iIdeUsuario", DbType.Int32, oIdUsuario);
+                _database.ExecuteNonQuery(dbcommand);
+
+                bUsuarioEliminado = true;
+
+            }
+            catch (System.Exception oException)
+            {
+
+                StringBuilder sMensaje = new StringBuilder();
+                sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.EliminaUsuario);
+                sMensaje.AppendLine("Parametro   : " + oIdUsuario);
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+            return bUsuarioEliminado;
+        }
+
+        public DtoUsuario ObtieneDatosUsuario(string oUsuario)
+        {
+            DtoUsuario oDtoUsuario = new DtoUsuario();
+
+            try
+            {
+
+                string sSQL = "select * from " + VISTAS.Usuarios + " where UPPER(login_usuario)='" + oUsuario.ToUpper() + "'";
+
+                DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+                dbcommand.CommandTimeout = 60;
+                
+                using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+                {
+                    while (dataReader.Read())
+                    {
+                        oDtoUsuario.Ide_Usuario = dataReader.GetInt32(0);
+                        oDtoUsuario.Login_usuario = dataReader.GetString(1).ToUpper();
+                        oDtoUsuario.Ide_rol = dataReader.GetInt32(2);
+                        oDtoUsuario.Nom_rol = dataReader.GetString(3).ToUpper();
+
+                    }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion,ex.Message,ex);
+            }
+               
+            return oDtoUsuario;
+        }
+
+        public List<DtoUsuario> ObtieneListaUsuarios() 
+        {
+            List<DtoUsuario> olstUsuario = new List<DtoUsuario>();
+
+            string sSQL = "select * from " + VISTAS.Usuarios + " order by login_usuario asc";
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoUsuario oDtoUsuario = new DtoUsuario();
+                    oDtoUsuario.Ide_Usuario = dataReader.GetInt32(0);
+                    oDtoUsuario.Login_usuario = dataReader.GetString(1).ToUpper();
+                    oDtoUsuario.Ide_rol = dataReader.GetInt32(2);
+                    oDtoUsuario.Nom_rol = dataReader.GetString(3).ToUpper();
+
+                    olstUsuario.Add(oDtoUsuario);
+                }
+            }
+
+            return olstUsuario;
+        }
+
+        public List<DtoRol> ObtieneListaRoles()
+        {
+            List<DtoRol> olstRol = new List<DtoRol>();
+
+            string sSQL = "select * from " + VISTAS.Roles + " order by ide_rol asc";
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoRol oDtoRol = new DtoRol();
+                    oDtoRol.Ide_rol = dataReader.GetInt32(0);
+                    oDtoRol.Nom_rol = dataReader.GetString(1).ToUpper();
+
+                    olstRol.Add(oDtoRol);
+                }
+            }
+
+            return olstRol;
+        }
+
+        public List<DtoLineaBase> ObtieneListaLineaBase() 
+        {
+            List<DtoLineaBase> olstLineaBase = new List<DtoLineaBase>();
+
+            string sSQL = "select * from " + VISTAS.LineBase;
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoLineaBase oDtoLineaBase = new DtoLineaBase();
+                    oDtoLineaBase.Id_linea_base = dataReader.GetInt32(0);
+                    oDtoLineaBase.Nombre = dataReader.GetString(1);
+                    oDtoLineaBase.Duracion = dataReader.GetInt32(2);
+                    oDtoLineaBase.Unidad_duracion = dataReader.GetString(3);
+                    oDtoLineaBase.Fecha_inicio = dataReader.GetDateTime(4);
+                    oDtoLineaBase.Fecha_fin = dataReader.GetDateTime(5);
+                    oDtoLineaBase.Ip_switch = dataReader.GetString(6);
+                    oDtoLineaBase.Puerto_switch = dataReader.GetInt32(7);
+
+                    olstLineaBase.Add(oDtoLineaBase);
+                }
+            }
+
+
+            return olstLineaBase;
+        }
+
+        public List<DtoLineaBase> ObtieneListaLineaBasexSwitchxInterface(string sIp_switch,string iPortSwitch)
+        {
+            List<DtoLineaBase> olstLineaBase = new List<DtoLineaBase>();
+
+            string sSQL = string.Empty;
+            if (iPortSwitch != string.Empty)
+            {
+                sSQL = "select * from " + VISTAS.LineBase + " where upper(ip_switch)='" + sIp_switch + "' and puerto_switch=" + iPortSwitch;
+            }
+            else 
+            {
+                sSQL = "select * from " + VISTAS.LineBase + " where upper(ip_switch)='" + sIp_switch + "'";
+            }
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoLineaBase oDtoLineaBase = new DtoLineaBase();
+                    oDtoLineaBase.Id_linea_base = dataReader.GetInt32(0);
+                    oDtoLineaBase.Nombre = dataReader.GetString(1);
+                    oDtoLineaBase.Duracion = dataReader.GetInt32(2);
+                    oDtoLineaBase.Unidad_duracion = dataReader.GetString(3);
+                    oDtoLineaBase.Fecha_inicio = dataReader.GetDateTime(4);
+                    oDtoLineaBase.Fecha_fin = dataReader.GetDateTime(5);
+                    oDtoLineaBase.Ip_switch = dataReader.GetString(6);
+                    oDtoLineaBase.Puerto_switch = dataReader.GetInt32(7);
+
+                    olstLineaBase.Add(oDtoLineaBase);
+                }
+            }
+
+
+            return olstLineaBase;
+        }
+
+        public List<DtoDetalleLineaBase> ObtieneListaDetalleLineaBasexIdentificador(LineaBase oLineaBase) 
+        {
+            List<DtoDetalleLineaBase> olstDetalleLineaBase = new List<DtoDetalleLineaBase>();
+
+            string sSQL = "select id_muestra,id_linea_base,ip_switch,puerto_switch,ip_destino,puerto_destino,ip_origen,puerto_origen,longitud_bytes,protocolo_ip,fecha_muestra " +
+                          " from " + VISTAS.DetalleLineBase + " where id_linea_base = " + oLineaBase.Id_linea_base.ToString() + " order by fecha_muestra asc";
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoDetalleLineaBase oDtoDetalleLineaBase = new DtoDetalleLineaBase();
+                    oDtoDetalleLineaBase.Ide_Muestra = dataReader.GetInt32(0);
+                    oDtoDetalleLineaBase.Id_linea_base = dataReader.GetInt32(1);
+                    oDtoDetalleLineaBase.Ip_Switch = dataReader.GetString(2);
+                    oDtoDetalleLineaBase.Puerto_Switch = dataReader.GetInt32(3);
+                    oDtoDetalleLineaBase.IPDestino = dataReader.GetString(4);
+                    oDtoDetalleLineaBase.PuertoDestino = dataReader.GetInt32(5);
+                    oDtoDetalleLineaBase.IPOrigen = dataReader.GetString(6);
+                    oDtoDetalleLineaBase.PuertoOrigen = dataReader.GetInt32(7);
+                    oDtoDetalleLineaBase.DataLength = dataReader.GetDouble(8);
+                    oDtoDetalleLineaBase.IPProtocol = dataReader.GetInt32(9);
+                    oDtoDetalleLineaBase.Fecha = dataReader.GetDateTime(10);
+
+                    olstDetalleLineaBase.Add(oDtoDetalleLineaBase);
+                }
+            }
+
+            return olstDetalleLineaBase;
+        }
+
+        public DtoLineaBase ObtieneDatosLineaBase(LineaBase oLineaBase) 
+        {
+            DtoLineaBase _LineaBase = new DtoLineaBase();
+
+            string sSQL = "select * from " + VISTAS.LineBaseTotal + " where id_linea_base = " + oLineaBase.Id_linea_base.ToString();
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    _LineaBase.Id_linea_base = dataReader.GetInt32(0);
+                    _LineaBase.Nombre = dataReader.GetString(1);
+                    _LineaBase.Duracion = dataReader.GetInt32(2);
+                    _LineaBase.Unidad_duracion = dataReader.GetString(3);
+                    _LineaBase.Fecha_inicio = dataReader.GetDateTime(4);
+                    _LineaBase.Fecha_fin = dataReader.GetDateTime(5);
+                    _LineaBase.Ip_switch = dataReader.GetString(6);
+                    _LineaBase.Puerto_switch = dataReader.GetInt32(7);
+                }
+            }
+
+
+            return _LineaBase;
+        }
+
+        public List<DtoMovilSMS> ObtieneListaMovilesSMS() 
+        {
+
+            List<DtoMovilSMS> olstMovilesSMS = new List<DtoMovilSMS>();
+
+            string sSQL = "select * from " + VISTAS.MovilesSMS;
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoMovilSMS oDtoMovilSMS = new DtoMovilSMS();
+                    oDtoMovilSMS.Num_Telefono = dataReader.GetString(0).ToString().ToUpper();
+                    oDtoMovilSMS.Nivel_Alarma = dataReader.GetString(1).ToString().ToUpper();
+
+                    olstMovilesSMS.Add(oDtoMovilSMS);
+                }
+            }
+
+
+            return olstMovilesSMS;
+        }
+
+        public List<DtoMovilSMS> ObtieneListaMovilesSMSxNivelAlarma(string sAlarma) 
+        {
+            List<DtoMovilSMS> olstMovilesSMS = new List<DtoMovilSMS>();
+
+            string sSQL = "select * from " + VISTAS.MovilesSMS + " where upper(nivel_alarma)='" + sAlarma.ToUpper() + "'";
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoMovilSMS oDtoMovilSMS = new DtoMovilSMS();
+                    oDtoMovilSMS.Num_Telefono = dataReader.GetString(0).ToString().ToUpper();
+                    oDtoMovilSMS.Nivel_Alarma = dataReader.GetString(1).ToString().ToUpper();
+
+                    olstMovilesSMS.Add(oDtoMovilSMS);
+                }
+            }
+
+            return olstMovilesSMS;
+        }
+
+        public List<DtoNivelAlarma> ObtieneListaNivelesAlarma()
+        {
+            List<DtoNivelAlarma> olstNivelesAlarma = new List<DtoNivelAlarma>();
+
+            string sSQL = "select * from " + VISTAS.NivelesAlarma;
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    DtoNivelAlarma oDtoNivelAlarma = new DtoNivelAlarma();
+                    oDtoNivelAlarma.Ide_Nivel = dataReader.GetString(0).ToString().ToUpper();
+                    oDtoNivelAlarma.Nombre_Nivel = dataReader.GetString(0).ToString().ToUpper();
+
+                    olstNivelesAlarma.Add(oDtoNivelAlarma);
+                }
+            }
+
+
+            return olstNivelesAlarma;
+        }
+
+        public DtoMovilSMS ObtieneDatosMovilSMS(string sNumeroMovil, string sAlarma) 
+        {
+            DtoMovilSMS oDtoMovilSMS = new DtoMovilSMS();
+            oDtoMovilSMS.Num_Telefono = string.Empty;
+            oDtoMovilSMS.Nivel_Alarma = string.Empty;
+
+            string sSQL = "select * from " + VISTAS.MovilesSMS + " where UPPER(num_telefono)='" + sNumeroMovil.ToUpper() + "' and UPPER(nivel_alarma)='" + sAlarma.ToUpper() + "'" ;
+
+            DbCommand dbcommand = _database.GetSqlStringCommand(sSQL);
+            using (IDataReader dataReader = _database.ExecuteReader(dbcommand))
+            {
+                while (dataReader.Read())
+                {
+                    oDtoMovilSMS.Num_Telefono = dataReader.GetString(0).ToUpper();
+                    oDtoMovilSMS.Nivel_Alarma = dataReader.GetString(1).ToUpper();
+                }
+            }
+
+            return oDtoMovilSMS;
+        }
+
+        public bool EliminaMovilSMS(string sNumeroMovil, string sAlarma) 
+        {
+            bool bMovilEliminado = false;
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.EliminaMovilSMS);
+                _database.AddInParameter(dbcommand, "sNumeroMovil", DbType.String, sNumeroMovil);
+                _database.AddInParameter(dbcommand, "sAlarma", DbType.String, sAlarma);
+                _database.ExecuteNonQuery(dbcommand);
+
+                bMovilEliminado = true;
+
+            }
+            catch (System.Exception oException)
+            {
+
+                StringBuilder sMensaje = new StringBuilder();
+                sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.EliminaMovilSMS);
+                sMensaje.AppendLine("Parametro   : " + sNumeroMovil + " - " + sAlarma);
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+            return bMovilEliminado;
+        }
+
+        public bool InsertaMovilSMS(string sNumeroMovil, string sAlarma)
+        {
+            bool bMovilEliminado = false;
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.InsertaMovilSMS);
+                _database.AddInParameter(dbcommand, "sNumeroMovil", DbType.String, sNumeroMovil);
+                _database.AddInParameter(dbcommand, "sAlarma", DbType.String, sAlarma);
+                _database.ExecuteNonQuery(dbcommand);
+
+                bMovilEliminado = true;
+
+            }
+            catch (System.Exception oException)
+            {
+
+                StringBuilder sMensaje = new StringBuilder();
+                sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.InsertaMovilSMS);
+                sMensaje.AppendLine("Parametro   : " + sNumeroMovil + " - " + sAlarma);
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+            return bMovilEliminado;
+        }
+
+        public bool ValidaUsuario(string oUsuario) 
+        {
+
+            bool bUsuarioValido = false;
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.ValidaUsuario);
+                _database.AddInParameter(dbcommand, "sUsuario", DbType.String, oUsuario);
+                _database.AddOutParameter(dbcommand, "bExistente", DbType.Boolean, 0);
+                _database.ExecuteNonQuery(dbcommand);
+
+                if (dbcommand.Parameters[1].Value != DBNull.Value)
+                {
+                    bUsuarioValido = Convert.ToBoolean(dbcommand.Parameters[1].Value);
+                }
+            }
+            catch (System.Exception oException)
+            {
+                
+                 StringBuilder sMensaje = new StringBuilder();
+                 sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.ValidaUsuario);
+                 sMensaje.AppendLine("Parametro   : " + oUsuario);
+                  
+                 throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+
+
+            return bUsuarioValido;
+        }
+
+        public bool VerificaLineaBaseVigente() 
+        {
+            bool bLineaBaseVigente = false;
+
+            try
+            {
+
+                DbCommand dbcommand = _database.GetStoredProcCommand(PROCEDIMIENTOS.LineaBaseVigente);
+                _database.AddOutParameter(dbcommand, "bLineaBaseEjecucion", DbType.Boolean, 0);
+                _database.ExecuteNonQuery(dbcommand);
+
+                if (dbcommand.Parameters[0].Value != DBNull.Value)
+                {
+                    bLineaBaseVigente = Convert.ToBoolean(dbcommand.Parameters[0].Value);
+                }
+            }
+            catch (System.Exception oException)
+            {
+
+                StringBuilder sMensaje = new StringBuilder();
+                sMensaje.AppendLine("Procedimiento : " + PROCEDIMIENTOS.ValidaUsuario);
+                sMensaje.AppendLine("Parametro   : ");
+
+                throw new DataBaseMySqlException(Globales.NombreAplicacion.ToUpper(), sMensaje.ToString() + oException.Message, oException);
+            }
+
+            return bLineaBaseVigente;
+        }
+
+
+      #endregion
+
+
+      #region Privados
+
+      #endregion
+    }
+}

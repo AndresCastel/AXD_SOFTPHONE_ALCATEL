@@ -1,0 +1,317 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using Axede.Encryption;
+using Axede.WPF.Softphone.Applications.GUI.Login_Comunication;
+using Axede.WPF.Softphone.Applications.GUI.Principal;
+using Axede.Mensajes;
+using System.Reflection;
+using Axede.WPF.Softphone.Applications.UtilControls.ModalMessageBox;
+using System.Collections.Concurrent;
+using Axede.WPF.Softphone.Applications.UtilClass;
+
+namespace Axede.WPF.Softphone.Applications
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : System.Windows.Application
+    {
+
+        #region Definiciones
+
+          
+            private Window _Owner = null;
+            private string _Usuario = null;
+            private string _SIPServer = null;
+            private string _Alias = null;
+            private string _Puerto = null;
+            private string _Clave = null;
+            private string _sBaseRegistry = "Software\\\\MicroSoft";
+            private string _sRegSubKeyName = "CDDA9601BC8CB56C9662B9F29D6375DCD7610EFD13650AE4";
+            Axede.WPF.Softphone.Applications.GUI.Splash.SplashScreen splashScreenLogin;
+            bool _InstanciasAplicacionActivas = false;
+
+        #endregion
+
+        #region Eventos Aplicacion
+
+        public App()
+        {
+          
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+
+            ////Carga estilos  adicionales-----------------------------------------------------------
+            ResourceDictionary dictMessageBox = new ResourceDictionary();
+            Uri uri = new Uri("Themes/MessageBoxModal.xaml", UriKind.RelativeOrAbsolute);
+            dictMessageBox.Source = uri;
+            System.Windows.Application.Current.Resources.MergedDictionaries.Add(dictMessageBox);
+            ////-------------------------------------------------------------------------------------
+
+           // //Despliega el formulario Splash-------------------------------------------------------
+            splashScreenLogin = new Axede.WPF.Softphone.Applications.GUI.Splash.SplashScreen();
+            this.MainWindow = splashScreenLogin;
+            splashScreenLogin.Show();
+           // //-------------------------------------------------------------------------------------
+
+
+            //Obtiene informacion de la aplicacion
+            Axede.WPF.Softphone.Applications.Principal.AcercaDe.AboutAssemblyDataProvider oPv = new Principal.AcercaDe.AboutAssemblyDataProvider();
+            string sProducto = oPv.Product;
+            string sCopyright = oPv.Copyright;
+            string sCompany = oPv.Company;
+            string sVersion = oPv.Version;
+            string sLink = oPv.LinkUri;
+
+
+            splashScreenLogin.AvailablePlugins = new[] { sProducto, sCopyright, sCompany, sVersion, sLink };
+
+
+         
+            var startupTask = Task.Factory.StartNew(() =>
+            {
+               
+                //Verifica instancia de la aplicación--------------------------------------------------
+                _InstanciasAplicacionActivas = VerificaInstanciaAplicacion();
+                if (_InstanciasAplicacionActivas == false)
+                {
+
+                
+
+                }
+
+            });
+
+            startupTask.ContinueWith(t =>
+            {
+
+                if (_InstanciasAplicacionActivas == true)
+                {
+                    string sTituloModal = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.TituloModalMensajes);
+                    string sMensaje_InstanciaEnEjecucion = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.Aplicacion_InstanciaEnEjecucion);
+                    MessageBoxModal.Show(sMensaje_InstanciaEnEjecucion, sTituloModal, MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Shutdown();
+                }
+                else
+                {
+                    //pendiente algunas tareas adicionales de verificación
+                    if (VerificaDatosUsuario() == false)
+                    {
+                        LanzaLogin();
+
+                        if (_Alias != null && _SIPServer != null && _Puerto != null)
+                        {
+                            _Alias = Crypto.ActionDecrypt(_Alias);
+                            _SIPServer = Crypto.ActionDecrypt(_SIPServer);
+                            _Puerto = Crypto.ActionDecrypt(_Puerto);
+
+                            LanzaSoftPhone();
+                        }
+                        else 
+                        {
+                            if (splashScreenLogin != null)
+                            {
+                                splashScreenLogin.Close();
+                                splashScreenLogin = null;
+                            }
+
+                            this.Shutdown();
+                        }
+
+                       
+                    }
+                    else 
+                    {
+                        LanzaSoftPhone();
+                    }
+                }
+
+            }, CancellationToken.None,TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
+
+        }
+
+        private bool VerificaInstanciaAplicacion()
+        {
+            string sMensaje = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.Aplicacion_VerificandoInstanciaAplicacion);
+
+            splashScreenLogin.Dispatcher.BeginInvoke(
+                      (Action)(() => splashScreenLogin.Message = sMensaje));
+
+
+            bool bInstanciaEnEjecucion = false;
+
+            Type type = this.GetType();
+            Assembly assembly = type.Assembly;
+
+            if (System.Diagnostics.Process.GetProcessesByName(type.Namespace).Length > 1)
+            {
+                return true;
+            }
+
+            Thread.Sleep(5000);
+
+            return bInstanciaEnEjecucion;
+        }
+
+        private void LanzaSoftPhone() 
+        {
+
+            SoftphoneWPF soft = new SoftphoneWPF(_Usuario, _Clave, _Alias, _SIPServer, _Puerto);
+            this.MainWindow = soft;
+            soft.Show();
+            soft.Activate();
+            soft.Focus();
+
+            if (splashScreenLogin != null)
+            {
+                splashScreenLogin.Close();
+                splashScreenLogin = null;
+            }
+
+            //soft.Conectar(_Usuario, _Clave, _Alias, _SIPServer, _Puerto);
+        }
+
+        private void LanzaLogin()
+        {
+
+            Login _frmLogin = new Login();
+            _frmLogin.Loaded += (sender, args) => { splashScreenLogin.Visibility= Visibility.Hidden; };
+            this.MainWindow = _frmLogin;
+            _frmLogin.Activate();
+            _frmLogin.Focus();
+            _frmLogin.ShowDialog();
+
+            if (_frmLogin.DialogResult == true)
+            {
+                if (_frmLogin.Usuario != null && _frmLogin.Clave != null && _frmLogin.SIPServe != null && _frmLogin.Alias != null && _frmLogin.Puerto != null)
+                {
+
+                    _Usuario = Crypto.ActionEncrypt(_frmLogin.Usuario);
+                    _Clave = Crypto.ActionEncrypt(_frmLogin.Clave);
+                    _SIPServer = Crypto.ActionEncrypt(_frmLogin.SIPServe);
+                    _Alias = Crypto.ActionEncrypt(_frmLogin.Alias);
+                    _Puerto = Crypto.ActionEncrypt(_frmLogin.Puerto);
+
+                    ActualizaRegistroUsuario();
+
+                    _Usuario = _frmLogin.Usuario;
+                    _Clave = _frmLogin.Clave;
+                    _SIPServer = Crypto.ActionEncrypt(_frmLogin.SIPServe);
+                    _Alias = Crypto.ActionEncrypt(_frmLogin.Alias);
+                    _Puerto = Crypto.ActionEncrypt(_frmLogin.Puerto);
+
+                }
+                else
+                {
+                    string sTituloModal = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.TituloModalMensajes);
+                    string sMensaje_ErrroDatosBasico = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.Aplicacion_ErrorDatosBasicos);
+                    MessageBoxModal.Show(sMensaje_ErrroDatosBasico, sTituloModal, MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Shutdown();
+                }
+            }
+            else 
+            {
+                this.Shutdown();
+            }
+           
+
+        }
+
+        private void ActualizaRegistroUsuario()
+        {
+            Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+            oReg = oReg.CreateSubKey(_sRegSubKeyName);
+            oReg.SetValue("UserSettings", _Usuario);
+            oReg.SetValue("GUID", _Clave);
+            oReg.SetValue("ServerSettings", _SIPServer);
+            oReg.SetValue("PortSettings", _Puerto);
+            oReg.SetValue("DisplaySettings", _Alias);
+            oReg.Close();
+        }
+
+        private void CreateRegistroUsuario()
+        {
+            try
+            {
+                Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+                oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+                oReg = oReg.CreateSubKey(_sRegSubKeyName);
+                oReg.SetValue("UserSettings", string.Empty);
+                oReg.SetValue("GUID", string.Empty);
+                oReg.SetValue("ServerSettings", string.Empty);
+                oReg.SetValue("PortSettings", string.Empty);
+                oReg.SetValue("DisplaySettings", string.Empty);
+                oReg.Close();
+            }
+            catch
+            {
+            }
+        }
+
+        private bool VerificaDatosUsuario()
+        {
+            bool bRegistroValido = true;
+
+            Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+            oReg = oReg.CreateSubKey(_sRegSubKeyName);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry + "\\\\" + _sRegSubKeyName);
+
+            string sUsuarioIX = oReg.GetValue("UserSettings", "").ToString();
+            string sPassIX = oReg.GetValue("GUID", "").ToString();
+            string sSipServer = oReg.GetValue("ServerSettings", "").ToString();
+            string sPort = oReg.GetValue("PortSettings", "").ToString();
+            string sAlias = oReg.GetValue("DisplaySettings", "").ToString();
+            oReg.Close();
+
+            if (string.IsNullOrEmpty(sUsuarioIX) || string.IsNullOrEmpty(sPassIX))
+            {
+                bRegistroValido = false;
+                CreateRegistroUsuario();
+            }
+            else
+            {
+
+                _Usuario = Crypto.ActionDecrypt(sUsuarioIX);
+                _Clave = Crypto.ActionDecrypt(sPassIX);
+                _SIPServer = Crypto.ActionDecrypt(sSipServer);
+                _Puerto = Crypto.ActionDecrypt(sPort);
+                _Alias = Crypto.ActionDecrypt(sAlias);
+            }
+
+
+            return bRegistroValido;
+        }
+
+        private static void WaitSeconds(double nSecs)
+        {
+            // Esperar los segundos indicados
+
+            // Crear la cadena para convertir en TimeSpan
+            string s = "0.00:00:" + nSecs.ToString().Replace(",", ".");
+            TimeSpan ts = TimeSpan.Parse(s);
+
+            // Añadirle la diferencia a la hora actual
+            DateTime t1 = DateTime.Now.Add(ts);
+
+            // Esta asignación solo es necesaria
+            // si la comprobación se hace al principio del bucle
+            DateTime t2 = DateTime.Now;
+           
+        }
+
+        #endregion
+
+
+    }
+}

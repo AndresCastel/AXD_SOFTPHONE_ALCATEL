@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoTipoGrafico
+    {
+
+        private int _Ide_TipoGrafico;
+        private string _Nom_TipoGrafico;
+
+        public int Ide_TipoGrafico
+        {
+            get { return _Ide_TipoGrafico; }
+            set { _Ide_TipoGrafico = value; }
+        }
+        public string Nom_TipoGrafico
+        {
+            get { return _Nom_TipoGrafico; }
+            set { _Nom_TipoGrafico = value; }
+        }
+
+
+    }
+}

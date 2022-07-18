@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace Axede.WPF.Softphone.Applications.UtilControls.PopUp
+{
+    /// <summary>
+    /// Interaction logic for PopControl.xaml
+    /// </summary>
+    public partial class PopControl : Window
+    {
+        Point _Poin;
+        private bool _BanMoveWindow = false;
+        public PopControl()
+        {
+            InitializeComponent();
+        }
+        public PopControl(Point poi)
+        {
+            InitializeComponent();
+            _Poin = poi;
+            UpdatePosition(poi);
+        }
+        public void UpdatePosition(Point poi)
+        {
+            if (!_BanMoveWindow)
+            {
+                this.Left = poi.X - 300;
+                this.Top = poi.Y;
+            }
+            _Poin = poi;
+        }
+
+        private void Border_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void ValidatePosition()
+        {
+            double RestX = _Poin.X - this.RestoreBounds.X - 300;
+            double RestY = _Poin.Y - this.RestoreBounds.Y;
+            if ((RestX <= 20 && RestY <=50))
+            {
+                _BanMoveWindow = false;
+                UpdatePosition(_Poin);
+            }
+        }
+
+        private void Window_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            _BanMoveWindow = true;
+            ValidatePosition();
+        }
+
+      
+    }
+}

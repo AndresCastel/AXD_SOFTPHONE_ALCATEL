@@ -1,0 +1,59 @@
+﻿<Window  x:Class="Axede.WPF.Softphone.Applications.GUI.Splash.SplashScreen"
+      xmlns:my="clr-namespace:Axede.WPF.Softphone.Applications.UtilControls.Loading"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d" 
+        Title="Splash"     d:DesignHeight="400" d:DesignWidth="700"
+        Height="290" Width="590" AllowsTransparency="True" 
+        WindowStyle="None" Background="Transparent"  
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="False"  x:Name="spashScreen"
+       xmlns:Startup="clr-namespace:Axede.WPF.Softphone.Applications.GUI.Splash">
+    <Border Margin="0,0,0,0"
+            BorderBrush="Black"
+            BorderThickness="0">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="5"></DropShadowEffect>
+        </Border.Effect>
+        <Grid   Margin="0,0,5,0" Height="Auto">
+
+            <Path Stroke="DarkGray" StrokeThickness="1" SnapsToDevicePixels="True" Data="M0,0 L400,0 L440,30 L440,200 L50,200 L0,170 z" Opacity="1">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0.5,1.3" >
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                            <GradientStop Color="#FF747474" Offset="0.495"/>
+                            <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <ScaleTransform ScaleX="1.3" ScaleY="1.3"></ScaleTransform>
+                </Path.RenderTransform>
+
+            </Path>
+            <Image HorizontalAlignment="Left" Margin="17,11,0,0" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/logo-axede.png" Stretch="None" VerticalAlignment="Top"  />
+
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="250,0,0,138" Width="Auto" Height="Auto" >
+                <ItemsControl ItemsSource="{Binding ElementName=spashScreen, Path=AvailablePlugins}" Margin="0,0,0,10" HorizontalAlignment="Right" Height="Auto"/>
+            </StackPanel>
+            <StackPanel  Margin="30,0,0,35"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="500">
+                <my:LoadingAnimationWP  Width="480"  x:Name="Loading" Background="Transparent"  />
+            </StackPanel>
+            <TextBlock Margin="20,35,23,0"  Text="Softphone - Axede"  Foreground="Black" Height="34" VerticalAlignment="Top" FontSize="20">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="4" Direction="330" Color="Black" Opacity="0.5" BlurRadius="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <TextBlock HorizontalAlignment="Left" Margin="50,0,0,40" VerticalAlignment="Bottom" Width="205" Text="{Binding ElementName=spashScreen, Path=Message}" />
+            <StackPanel HorizontalAlignment="Left" Margin="300,0,0,40" VerticalAlignment="Bottom" Width="205" >
+                <TextBlock Text="{Binding ElementName=spashScreen, Path=Licensee}"  />
+            </StackPanel>
+
+
+        </Grid>
+
+    </Border>
+</Window>

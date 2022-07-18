@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+
+    public class TraficPoint
+    {
+      
+        public DateTime Date { get; set; }
+        public double length { get; set; }
+        public double Totallength { get; set; }
+        public int PortProtocolDest { get; set; }
+        public int PortProtocolOrig { get; set; }
+        public string IPOrigen { get; set; }
+        public string IPDestino { get; set; }
+
+
+        public TraficPoint(double totallength,double length, DateTime date, string ipdestino, int portprotocolDest, string iporigen, int portprotocolOrigen)
+        {
+            this.Totallength = totallength;
+            this.PortProtocolDest = portprotocolDest;
+            this.PortProtocolOrig = portprotocolOrigen;
+            this.IPDestino = ipdestino;
+            this.IPOrigen = iporigen;
+            this.Date = date;
+            this.length = length;
+        }
+    }
+}

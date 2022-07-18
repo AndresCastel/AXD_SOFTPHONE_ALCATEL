@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class sFlowTrace
+    {
+        [JsonProperty(PropertyName = "switchIPAddress")]
+        public String switchIPAddress { get; set; }
+
+        [JsonProperty(PropertyName = "srcIPAddress")]
+        public String srcIPAddress { get; set; }
+
+        [JsonProperty(PropertyName = "destIPAddress")]
+        public String destIPAddress { get; set; }
+
+        [JsonProperty(PropertyName = "swithPort")]
+        public int swithPort { get; set; }
+
+        [JsonProperty(PropertyName = "protocolType")]
+        public int IPProtocol { get; set; }
+
+        [JsonProperty(PropertyName = "destPort")]
+        public int destprotocol { get; set; }
+
+        [JsonProperty(PropertyName = "srcPort")]
+        public int srcprotocol { get; set; }
+
+        [JsonProperty(PropertyName = "length")]
+        public double length { get; set; }
+
+        [JsonProperty(PropertyName = "date")]
+        public long date { get; set; }
+
+        private DateTime _FinalDate;
+        public DateTime FinalDate
+        {
+            get
+            {
+                if (this.date > 0)
+                {
+                    TimeZone oTimeZone = TimeZone.CurrentTimeZone;
+                    TimeSpan oTimeOffset = oTimeZone.GetUtcOffset(DateTime.Now);
+                    DateTime dtEpochStartTime = Convert.ToDateTime("1/1/1970 0:00:00 AM");
+                    dtEpochStartTime = dtEpochStartTime.AddMilliseconds(this.date + oTimeOffset.TotalMilliseconds);
+                    return dtEpochStartTime;
+                }
+                else 
+                {
+                    return _FinalDate;
+                }
+              
+            }
+            set 
+            {
+                _FinalDate = value;
+            }
+        }
+
+        public string DesSrcProtocol { get; set; }
+        public string DesDestProtocol { get; set; }
+
+    }
+}

@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class Rol
+    {
+        private int _ide_rol;
+        private string _nom_rol;
+
+        public int Ide_rol
+        {
+            get { return _ide_rol; }
+            set { _ide_rol = value; }
+        }
+        public string Nom_rol
+        {
+            get { return _nom_rol; }
+            set { _nom_rol = value; }
+        }
+    }
+}

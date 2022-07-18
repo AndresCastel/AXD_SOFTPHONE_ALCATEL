@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Configuration;
+
+namespace Axede.ProxyService
+{
+    [Serializable]
+    public partial class ProxyService : IProxyService
+    {
+        
+        public static string sURL_XMLMessaging_OTUC5
+        {
+            get
+            {
+                string sURL_XMLMessaging_OTUC5 = ConfigurationManager.AppSettings["URL_XMLMessaging_OTUC5"];
+                if (!string.IsNullOrEmpty(sURL_XMLMessaging_OTUC5))
+                {
+                    return sURL_XMLMessaging_OTUC5;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+        public static string sXMLMessaging_OTUC5_User
+        {
+            get
+            {
+                string sXMLMessaging_OTUC5_User = ConfigurationManager.AppSettings["XMLMessaging_OTUC5_User"];
+                if (!string.IsNullOrEmpty(sXMLMessaging_OTUC5_User))
+                {
+                    return sXMLMessaging_OTUC5_User;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+        public static string sXMLMessaging_OTUC5_Pass
+        {
+            get
+            {
+                string sXMLMessaging_OTUC5_Pass = ConfigurationManager.AppSettings["XMLMessaging_OTUC5_Pass"];
+                if (!string.IsNullOrEmpty(sXMLMessaging_OTUC5_Pass))
+                {
+                    return sXMLMessaging_OTUC5_Pass;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+
+        private static XMLMessagingService_OTUC5.XmlApiFrameworkService _XMLMessagingService_OTUC5 { get; set; }
+
+        static ProxyService()
+        {
+            _XMLMessagingService_OTUC5 = new XMLMessagingService_OTUC5.XmlApiFrameworkService();
+            if (sURL_XMLMessaging_OTUC5 != string.Empty)
+            {
+                _XMLMessagingService_OTUC5.Url = sURL_XMLMessaging_OTUC5;
+            }
+
+        }
+
+    }
+}

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <configSections>
+    <section name="videoconferencias" type="Axede.WPF.Softphone.Applications.BussinesClass.Configuracion.SeccionVideoConferencia,Axede.WPF.Softphone.Applications" />
+    <section name="OXEServerServices" type="Axede.WPF.Softphone.Applications.BussinesClass.Configuracion.SeccionOXEServerServices,Axede.WPF.Softphone.Applications" />
+  </configSections>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0" />
+  </startup>
+  <appSettings>
+    <add key="ConnectionStringName" value="MySQL" />
+    <add key="ApplicationName" value="SoftPhone - Axede"/>
+    <add key="SecWaitSendTones" value="3000"/>
+    <add key="SIPServer" value="192.168.102.71" />
+    <!--<add key="SIPServer" value="192.168.100.200" />-->
+    <add key="PuertoServer" value="5060" />
+    <add key="DTMFsobre2833" value="97" />
+    <add key="EncryptionKeyUI" value="3fjqbI1ADhInMWcU3/grvBfALrnqJ3u+qK3p8bg3/0I=" />
+    <add key="EncryptionArrayUI" value="s/I98dSzCAEcBODPwORC3Q==" />
+    <add key="XmlMensajes" value="Mensajes.xml" />
+    <add key="ClientSettingsProvider.ServiceUri" value="" />
+    <add key="URL_XMLApiFrameworkService_OTUC5" value="http://192.168.100.199/api/services/5.0/XMLApiFramework?wsdl" />
+    <add key="URL_XMLMessagingService_OTUC5" value="http://192.168.100.199/api/services/5.0/XMLMessaging?wsdl" />
+    <add key ="XMLApiFrameworkService_OTUC5_User" value="cmolina"/>
+    <add key ="XMLApiFrameworkService_OTUC5_Pass" value="1234"/>
+    <add key="VoiceMailNumber" value="13950" />
+    <add key="KeyExternalCall" value="9" />
+    <add key="FileOverService" value="false" />
+    <add key="IntentosPingServer" value="3" />
+    <add key="TimeoutPingServer" value="3000" />
+  </appSettings> 
+  
+  
+  <connectionStrings>
+    <add name="MySQL" connectionString="Data Source=10.100.100.56;Initial Catalog=axd_interaxion_r7;User Id=userotuc;Password=Axede.otuc;" />
+  </connectionStrings>
+
+  <OXEServerServices>
+    <OXEServerService IP="192.168.102.71" Activo="true" Principal="true"/>
+    <OXEServerService IP="192.168.102.72" Activo="false" Principal="false"/>
+  </OXEServerServices>
+  
+  <videoconferencias>
+    <!--Tipo de llamada 1=Extension, 2=IP, 3=Url-->
+    <videoconferencia numeroMarcar="192.168.102.107" nombre="RMX" TipoLlamada="2"/>
+  </videoconferencias>
+  
+</configuration>

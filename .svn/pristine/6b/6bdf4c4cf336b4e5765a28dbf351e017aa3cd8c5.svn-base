@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoMovilSMS
+    {
+        private string _Num_Telefono;
+        private string _Nivel_Alarma;
+        private Int32 _TotalRegistros;
+
+
+        public string Num_Telefono
+        {
+            get { return _Num_Telefono; }
+            set { _Num_Telefono = value; }
+        }
+     
+        public string Nivel_Alarma
+        {
+            get { return _Nivel_Alarma; }
+            set { _Nivel_Alarma = value; }
+        }
+
+
+        public Int32 TotalRegistros
+        {
+            get { return _TotalRegistros; }
+            set { _TotalRegistros = value; }
+        }
+    }
+}

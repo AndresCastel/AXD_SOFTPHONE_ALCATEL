@@ -1,0 +1,16 @@
+﻿
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.Global
+{
+    public class PROCEDIMIENTOS
+    {
+        public static string GetUsersIx = "INTP_SelAllContactsByInitialLetterPageAndPageSize";
+        public static string InsContacto = "INTP_InsContact";
+        public static string DelContacto = "INTP_DelContact";
+    }
+}

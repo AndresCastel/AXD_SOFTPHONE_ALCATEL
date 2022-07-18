@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class LineaBase
+    {
+        private int _id_linea_base;
+
+        public int Id_linea_base
+        {
+            get { return _id_linea_base; }
+            set { _id_linea_base = value; }
+        }
+    }
+}

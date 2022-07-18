@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class AlarmaMovilSMS
+    {
+        private string _NumeroMovil;
+        private string _NivelAlarma;
+
+        public string NumeroMovil
+        {
+            get { return _NumeroMovil; }
+            set { _NumeroMovil = value; }
+        }
+        public string NivelAlarma
+        {
+            get { return _NivelAlarma; }
+            set { _NivelAlarma = value; }
+        }
+    }
+}

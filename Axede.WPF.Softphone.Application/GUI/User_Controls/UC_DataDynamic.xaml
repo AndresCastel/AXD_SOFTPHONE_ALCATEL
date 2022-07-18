@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Axede.WPF.Softphone.Applications.GUI.User_Controls.UC_DataDynamic"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Notify="clr-namespace:Axede.WPF.Softphone.Applications.GUI"
+             mc:Ignorable="d"
+             Height="auto"
+             Width="auto" >
+    <StackPanel Width="auto" Height="auto">
+        <DataGrid HeadersVisibility="None"  Name="grvDatosAdicionales" 
+                      MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource  Mode=FindAncestor, AncestorType=FrameworkElement}}"
+                      IsReadOnly="True" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionMode="Single"
+                      AllowDrop="False" Height="Auto" Width="Auto">
+            <DataGrid.Columns>
+                <Notify:GridPersonalizada Binding="{Binding Campo}" Width="100" FontWeight="Bold"/>
+                <Notify:GridPersonalizada Binding="{Binding Valor}" Width="100*" MaxWidth="500" CellStyle="{DynamicResource RightCellStyle}" Foreground="Black" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Notify:PageGridGestionUC x:Name="Paginador" HorizontalAlignment="Center" />
+    </StackPanel>
+</UserControl>

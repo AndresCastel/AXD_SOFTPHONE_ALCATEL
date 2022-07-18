@@ -1,0 +1,32 @@
+﻿<Application x:Class="Axede.WPF.Softphone.Applications.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:local="clr-namespace:Axede.WPF.Softphone.Applications.Principal.AcercaDe" >
+    <Application.Resources>
+        <ResourceDictionary >
+
+
+
+            <local:AboutAssemblyDataProvider x:Key="aboutDataProvider" />
+            <XmlDataProvider x:Key="aboutProvider" XPath="ApplicationInfo" IsAsynchronous="True" IsInitialLoadEnabled="False">
+                <x:XData>
+                    <ApplicationInfo xmlns="">
+                        <Title>Acerca De...</Title>
+                        <Product>SoftPhone - Axede S.A</Product>
+                        <Company>AXEDE S.A.</Company>
+                        <Copyright>Copyright © 2013</Copyright>
+                        <Description>SoftPhone.
+
+                        </Description>
+                        <Version>1.0.0.1</Version>
+                        <Link Uri="http://www.axede.com.co/">http://www.axede.com.co/</Link>
+                    </ApplicationInfo>
+                </x:XData>
+            </XmlDataProvider>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes\GlobalStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

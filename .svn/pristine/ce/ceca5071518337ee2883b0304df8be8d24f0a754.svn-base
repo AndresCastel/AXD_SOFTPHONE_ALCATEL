@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class IniciarLineaBase
+    {
+
+        [JsonProperty(PropertyName = "type")]
+        public string type { get; set; }
+
+        [JsonProperty(PropertyName = "recordDuration")]
+        public int recordDuration { get; set; }
+
+        [JsonProperty(PropertyName = "durationUnit")]
+        public string durationUnit { get; set; }
+
+        [JsonProperty(PropertyName = "switchIP")]
+        public string switchIP { get; set; }
+
+        [JsonProperty(PropertyName = "switchPort")]
+        public int switchPort { get; set; }
+
+      
+    }
+}

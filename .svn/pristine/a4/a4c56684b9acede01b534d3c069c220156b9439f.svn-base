@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoPort
+    {
+
+        private string _Nombre;
+        private int _Numero;
+
+        public string Nombre
+        {
+            get { return _Nombre; }
+            set { _Nombre = value; }
+        }
+        
+        public int Numero
+        {
+            get { return _Numero; }
+            set { _Numero = value; }
+        }
+    
+
+    }
+}

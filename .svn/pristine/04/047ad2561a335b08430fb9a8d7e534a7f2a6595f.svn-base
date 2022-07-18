@@ -1,0 +1,70 @@
+﻿<Window xmlns:User_Controls="clr-namespace:Axede.WPF.Softphone.Applications.GUI.User_Controls"  x:Class="Axede.WPF.Softphone.Applications.UtilControls.PopUp.ControlVideo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:wf ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        Title="PopControl" Height="395.759" Width="453.28"  WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        AllowsTransparency="False"
+        Background="Transparent" MouseDown="Window_MouseDown"  
+        WindowStartupLocation="CenterScreen" MouseUp="Window_MouseUp_1" >
+    <Grid Width="auto" Height="auto" Margin="0,0,2,0">
+        <Border BorderBrush="Black" BorderThickness="1.5" CornerRadius="0" >
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                    <GradientStop Color="#FF292929" Offset="0.314"/>
+                    <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <!--<Button Template="{DynamicResource GlassButtonRED}"  x:Name="Salir" Content="X" Click="ButtonClose_Click" FontFamily="Kartika" 
+                    FontSize="14.667" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Width="56" Height="22" VerticalAlignment="Top" 
+                    Margin="0,0,10,0" />-->
+
+                <Button Template="{DynamicResource GlassButtonRED}" x:Name="Minimize"  Content="_" FontFamily="Kartika" FontSize="14.667" 
+                    Foreground="White" FontWeight="Bold" Click="Minimizar_Click" Width="56" Height="22" VerticalAlignment="Top" HorizontalAlignment="Right" 
+                    Margin="0,0,0,0" />
+            </Grid>
+        </Border>
+        <WindowsFormsHost x:Name="remoteVideoWindow" Margin="26,32,52,124">
+            <WindowsFormsHost.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </WindowsFormsHost.Effect>
+            <wf:Panel  x:Name="remoteVideoPanel" />
+        </WindowsFormsHost>
+        <Button Name="ButtonLocalVideo" Style="{StaticResource GlassButtonSem}" Background="White"   Click="Button_Click" Margin="49,342,325,13" >
+            <StackPanel Orientation="Horizontal" >
+
+                <Label x:Name="lblNomButon" VerticalAlignment="Center" Margin="-4,0,0,0" Content="Video Local" FontSize="12" Foreground="#FFBD8010" FontFamily="Stencil"/>
+            </StackPanel>
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </Button.Effect>
+        </Button>
+
+        <Button Name="ButtonSendVideo" Style="{StaticResource GlassButtonSem}" Background="White"   Click="ButtonSendVideo_Click" Margin="329,345,35,10" >
+            <StackPanel Orientation="Horizontal" >
+                <Label x:Name="lblNomButonRemote" VerticalAlignment="Center" Margin="-4,0,0,0" Content="Enviar Video" FontSize="12" Foreground="#FFBD8010" FontFamily="Stencil"/>
+            </StackPanel>
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </Button.Effect>
+        </Button>
+
+        <!--<Button Content="Send Video" x:Name="ButtonSendVideo" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="137" Margin="299,345,0,0" Click="ButtonSendVideo_Click" />-->
+        <WindowsFormsHost  x:Name="localVideoWindow" Margin="26,163,291,124">
+            <WindowsFormsHost.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </WindowsFormsHost.Effect>
+            <wf:Panel  x:Name="localVideoPanel" />
+        </WindowsFormsHost>
+        <Separator Height="3" Background="Black" Margin="0,329,0,64" />
+        <Separator Height="3" Background="Black" Margin="0,326,0,67" />
+        <Separator Height="3" Background="White" Margin="0,329,0,64" >
+            <Separator.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </Separator.Effect>
+        </Separator>
+    </Grid>
+</Window>

@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoTipoTrafico
+    {
+
+        private int _Ide_TipoTrafico;
+        private string _Nom_TipoTrafico;
+
+        public int Ide_TipoTrafico
+        {
+            get { return _Ide_TipoTrafico; }
+            set { _Ide_TipoTrafico = value; }
+        }
+       
+        public string Nom_TipoTrafico
+        {
+            get { return _Nom_TipoTrafico; }
+            set { _Nom_TipoTrafico = value; }
+        }
+
+
+    }
+}

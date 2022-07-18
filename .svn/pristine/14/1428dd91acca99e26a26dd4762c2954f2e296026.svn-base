@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConfiguracionMensaje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Usuario</Code>
+    <Language>ES</Language>
+    <Description>Usuario requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Clave</Code>
+    <Language>ES</Language>
+    <Description>Clave requerida...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Server</Code>
+    <Language>ES</Language>
+    <Description>SIPServer requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Puerto</Code>
+    <Language>ES</Language>
+    <Description>Puerto requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblUsuario</Code>
+    <Language>ES</Language>
+    <Description>Usuario :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblAlias</Code>
+    <Language>ES</Language>
+    <Description>Alias :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonCancelar</Code>
+    <Language>ES</Language>
+    <Description>Cancelar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonAceptar</Code>
+    <Language>ES</Language>
+    <Description>Aceptar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblClave</Code>
+    <Language>ES</Language>
+    <Description>Clave :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblSIPServer</Code>
+    <Language>ES</Language>
+    <Description>SIP Server :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblPuerto</Code>
+    <Language>ES</Language>
+    <Description>Puerto :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+</ConfiguracionMensaje>

@@ -1,0 +1,249 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using Axede.WPF.Softphone.Applications.GUI.Login_Comunication;
+using Axede.WPF.Softphone.Applications.GUI.Principal;
+using Axede.WPF.Softphone.Applications.Utilidades;
+
+namespace Axede.WPF.Softphone.Applications
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : System.Windows.Application
+    {
+
+        #region Definiciones
+        public Login _frmLogin;
+        private Window _Owner = null;
+        private string _Usuario = null;
+        private string _SIPServer = null;
+        private string _Alias = null;
+        private string _Puerto = null;
+        private string _Clave = null;
+        private string _sBaseRegistry = "Software\\\\MicroSoft";
+        private string _sRegSubKeyName = "CDDA9601BC8CB56C9662B9F29D6375DCD7610EFD13650AE4";
+        Axede.WPF.Softphone.Applications.GUI.Splash.SplashScreen splashScreenLogin;
+        private static string sEncryptionKeyUI
+        {
+            get
+            {
+                string _sEncryptionKeyUI = ConfigurationManager.AppSettings["EncryptionKeyUI"];
+                if (!string.IsNullOrEmpty(_sEncryptionKeyUI))
+                {
+                    return _sEncryptionKeyUI;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+        private static string sEncryptionArrayUI
+        {
+            get
+            {
+                string _sEncryptionArrayUI = ConfigurationManager.AppSettings["EncryptionArrayUI"];
+                if (!string.IsNullOrEmpty(_sEncryptionArrayUI))
+                {
+                    return _sEncryptionArrayUI;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+    
+        #endregion
+
+        #region Eventos Aplicacion
+
+        public App()
+        {
+           
+
+            //StartupUri = new Uri("/Axede.WpfForms.Application.GestionCobro;component/Seguridad/frmLogin.xaml", UriKind.Relative);
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+
+            ////Carga estilos  adicionales-----------------------------------------------------------
+            //ResourceDictionary dictMessageBox = new ResourceDictionary();
+            //Uri uri = new Uri("Themes/MessageBoxModal.xaml", UriKind.RelativeOrAbsolute);
+            //dictMessageBox.Source = uri;
+            //System.Windows.Application.Current.Resources.MergedDictionaries.Add(dictMessageBox);
+            ////-------------------------------------------------------------------------------------
+
+           // //Despliega el formulario Splash-------------------------------------------------------
+           // splashScreenLogin = new Axede.WPF.Softphone.Applications.GUI.Splash.SplashScreen();
+           // this.MainWindow = splashScreenLogin;
+           // splashScreenLogin.Show();
+           // //-------------------------------------------------------------------------------------
+        
+         
+           // Thread.Sleep(3000);
+           //// WaitSeconds(50);
+
+
+            SoftphoneWPF soft = new SoftphoneWPF();
+            this.MainWindow = soft;
+            soft.Show();
+          //  splashScreenLogin.Close();
+            soft.Activate();
+            soft.Focus();
+            if (VerificaDatosUsuario() == false)
+            {
+                LanzaLogin();
+            }
+            if (!string.IsNullOrEmpty(_Usuario) && !string.IsNullOrEmpty(_Clave) && !string.IsNullOrEmpty(_SIPServer) && !string.IsNullOrEmpty(_Puerto))
+            {
+                _Usuario = _Usuario.Replace("\0", string.Empty);
+                _Clave = _Clave.Replace("\0", string.Empty);
+                _SIPServer = _SIPServer.Replace("\0", string.Empty);
+                _Puerto = _Puerto.Replace("\0", string.Empty);
+                _Alias = _Alias.Replace("\0", string.Empty);
+            }
+            soft.Conectar(_Usuario, _Clave, _Alias, _SIPServer, _Puerto);
+         //   splashScreenLogin = null;
+        
+        }
+
+        private void LanzaLogin()
+        {
+            if (_frmLogin != null)
+            {
+                _frmLogin = null;
+            }
+            if (_frmLogin == null)
+            {
+                _frmLogin = new Login(_Owner);
+                _frmLogin.ShowDialog();
+                if (_frmLogin.DialogResult == true)
+                {
+                    Encryption eEncryption = new Encryption(sEncryptionKeyUI, sEncryptionArrayUI);
+
+                    _Usuario = eEncryption.Encrypt(_frmLogin.Usuario);
+                    _Clave = eEncryption.Encrypt(_frmLogin.Clave);
+                    _SIPServer = eEncryption.Encrypt(_frmLogin.SIPServe);
+                    _Alias = eEncryption.Encrypt(_frmLogin.Alias);
+                    _Puerto = eEncryption.Encrypt(_frmLogin.Puerto);
+
+                    ActualizaRegistroUsuario();
+
+                    _Usuario = _frmLogin.Usuario;
+                    _Clave = _frmLogin.Clave;
+                    _SIPServer = eEncryption.Encrypt(_frmLogin.SIPServe);
+                    _Alias = eEncryption.Encrypt(_frmLogin.Alias);
+                    _Puerto = eEncryption.Encrypt(_frmLogin.Puerto);
+
+                }
+                _frmLogin.Close();
+                _frmLogin = null;
+            }
+        }
+
+        private void ActualizaRegistroUsuario()
+        {
+            Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+            oReg = oReg.CreateSubKey(_sRegSubKeyName);
+            oReg.SetValue("UserSettings", _Usuario);
+            oReg.SetValue("GUID", _Clave);
+            oReg.SetValue("ServerSettings", _SIPServer);
+            oReg.SetValue("PortSettings", _Puerto);
+            oReg.SetValue("DisplaySettings", _Alias);
+            oReg.Close();
+        }
+
+        private void CreateRegistroUsuario()
+        {
+            try
+            {
+                Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+                oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+                oReg = oReg.CreateSubKey(_sRegSubKeyName);
+                oReg.SetValue("UserSettings", string.Empty);
+                oReg.SetValue("GUID", string.Empty);
+                oReg.SetValue("ServerSettings", string.Empty);
+                oReg.SetValue("PortSettings", string.Empty);
+                oReg.SetValue("DisplaySettings", string.Empty);
+                oReg.Close();
+            }
+            catch
+            {
+            }
+        }
+
+        private bool VerificaDatosUsuario()
+        {
+            bool bRegistroValido = true;
+
+            Microsoft.Win32.RegistryKey oReg = default(Microsoft.Win32.RegistryKey);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry, true);
+            oReg = oReg.CreateSubKey(_sRegSubKeyName);
+            oReg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_sBaseRegistry + "\\\\" + _sRegSubKeyName);
+
+            string sUsuarioIX = oReg.GetValue("UserSettings", "").ToString();
+            string sPassIX = oReg.GetValue("GUID", "").ToString();
+            string sSipServer = oReg.GetValue("ServerSettings", "").ToString();
+            string sPort = oReg.GetValue("PortSettings", "").ToString();
+            string sAlias = oReg.GetValue("DisplaySettings", "").ToString();
+            oReg.Close();
+
+            if (string.IsNullOrEmpty(sUsuarioIX) || string.IsNullOrEmpty(sPassIX))
+            {
+                bRegistroValido = false;
+                CreateRegistroUsuario();
+            }
+            else
+            {
+                Encryption eEncryption = new Encryption(sEncryptionKeyUI, sEncryptionArrayUI);
+                _Usuario = eEncryption.Decrypt(sUsuarioIX);
+                _Clave = eEncryption.Decrypt(sPassIX);
+                _SIPServer = eEncryption.Decrypt(sSipServer);
+                _Puerto = eEncryption.Decrypt(sPort);
+                _Alias = eEncryption.Decrypt(sAlias);
+            }
+
+
+            return bRegistroValido;
+        }
+
+        private static void WaitSeconds(double nSecs)
+        {
+            // Esperar los segundos indicados
+
+            // Crear la cadena para convertir en TimeSpan
+            string s = "0.00:00:" + nSecs.ToString().Replace(",", ".");
+            TimeSpan ts = TimeSpan.Parse(s);
+
+            // Añadirle la diferencia a la hora actual
+            DateTime t1 = DateTime.Now.Add(ts);
+
+            // Esta asignación solo es necesaria
+            // si la comprobación se hace al principio del bucle
+            DateTime t2 = DateTime.Now;
+           
+        }
+
+        #endregion
+
+        #region Privados      
+
+
+        #endregion
+
+        #region IView
+
+    
+
+        #endregion
+    }
+}

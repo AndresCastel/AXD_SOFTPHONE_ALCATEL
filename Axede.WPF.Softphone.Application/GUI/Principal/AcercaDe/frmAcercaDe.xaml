@@ -1,0 +1,98 @@
+﻿<CustomWindow:StandardWindow x:Class="Axede.WPF.Softphone.Applications.Principal.AcercaDe.frmAcercaDe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:CustomWindow="clr-namespace:Axede.WPF.CustomWindow;assembly=Axede.WPF.CustomWindow"
+        FocusManager.FocusedElement="{Binding ElementName=btnAceptar}"
+        Title="{Binding Mode=OneTime, Source={StaticResource aboutProvider}, XPath=Title}" x:Uid="idAboutBox"
+    Style="{DynamicResource AboutDialogStyle}" WindowStartupLocation="CenterOwner" WindowStyle="None" ShowInTaskbar="False"
+    AllowsTransparency="True" Background="Transparent"  MaximizeButtonState="None" MinimizeButtonState="None" CloseButtonState="None" Loaded="StandardWindow_Loaded" KeyUp="StandardWindow_KeyUp" TabIndex="0">
+    <Window.Resources>
+
+        <Image x:Key="aboutLogo" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/AcercaDeLogo.png" />
+        <Style x:Key="AboutDialogStyle" TargetType="Window">
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Width" Value="500" />
+            <Setter Property="ShowInTaskbar" Value="False" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+            <Setter Property="SizeToContent" Value="Height" />
+        </Style>
+        <Style x:Key="DisplayAreaStyle" TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="10,10,10,5" />
+        </Style>
+        <Style x:Key="BackgroundStyle" TargetType="{x:Type StackPanel}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Offset="0" Color="Gray" />
+                        <GradientStop Offset="0.55" Color="White" />
+                        <GradientStop Offset="0.85" Color="White" />
+                        <GradientStop Offset="1" Color="Gray" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="ParagraphSeparator" TargetType="{x:Type Label}">
+            <Setter Property="Padding" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="LinkLabelStyle">
+            <Setter Property="Control.Padding" Value="0" />
+            <Setter Property="Control.VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="ReadOnlyDescStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="MinLines" Value="6" />
+            <Setter Property="MaxLines" Value="6" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
+        </Style>
+        <Style x:Key="OkButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="75" />
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="DockPanel.Dock" Value="Right" />
+            <Setter Property="IsDefault" Value="True" />
+            <Setter Property="IsCancel" Value="True" />
+        </Style>
+    </Window.Resources>
+    
+    <Border Background="#21000000" Visibility="{Binding Visibility}">
+        <Border Name="border" BorderBrush="Gray" Background="White" BorderThickness="1" Padding="0" Margin="0" CornerRadius="0,0,5,5" >
+            <Border.BitmapEffect>
+                <DropShadowBitmapEffect Color="Black" Opacity="0.5" Direction="270" ShadowDepth="0.7" />
+            </Border.BitmapEffect>
+            
+            <StackPanel x:Uid="clientArea" Style="{StaticResource BackgroundStyle}">
+                <StaticResource ResourceKey="aboutLogo" />
+                <StackPanel x:Uid="displayArea" Style="{StaticResource DisplayAreaStyle}" 
+                    DataContext="{StaticResource aboutProvider}">
+                    <Label x:Name="productName" x:Uid="productName" Content="{Binding Mode=OneTime, XPath=Product}" TabIndex="0" SnapsToDevicePixels="False" />
+                    <StackPanel x:Uid="versionArea" Orientation="Horizontal">
+                        <Label x:Name="versionLabel" x:Uid="VersionLabel" Content="Version - " TabIndex="0" />
+                        <Label x:Name="version" x:Uid="version" Content="{Binding Mode=OneTime, XPath=Version}" TabIndex="0" />
+                    </StackPanel>
+                    <Label x:Name="copyright" x:Uid="copyright" Content="{Binding Mode=OneTime, XPath=Copyright}" TabIndex="0" />
+                    <Label x:Name="company" x:Uid="company" Content="{Binding Mode=OneTime, XPath=Company}" TabIndex="0" />
+                    <Label x:Name="reserved" x:Uid="reserved" Content="Todos los Derechos Reservados" TabIndex="0" />
+                    <Label x:Name="info" x:Uid="info" Style="{StaticResource ParagraphSeparator}" 
+                   Content="Descripción del Producto:" TabIndex="0" />
+                    <TextBox x:Name="description" x:Uid="description" Text="{Binding Mode=OneTime, XPath=Description}"
+                     Style="{StaticResource ReadOnlyDescStyle}" TabIndex="0" />
+                    <StackPanel Height="5"/>
+                    <DockPanel x:Uid="buttonArea">
+                        <Button x:Name="btnAceptar" x:Uid="btnAceptar" Height="20" Width="72" DockPanel.Dock="Right" Style="{DynamicResource ButtonComMedia}" 
+                        Content="Aceptar" Click="okButton_Click" TabIndex="1" SnapsToDevicePixels="False" />
+                        <Label x:Name="productLink" x:Uid="productLink" Style="{StaticResource LinkLabelStyle}" TabIndex="0" SnapsToDevicePixels="False">
+                            <Hyperlink x:Name="hyperlink" x:Uid="hyperlink" NavigateUri="{Binding Mode=OneTime, XPath=Link/@Uri}"  Style="{StaticResource LinkLabelStyle}"  Hyperlink.RequestNavigate="hyperlink_RequestNavigate">
+                                <TextBlock Text="{Binding Mode=OneTime, XPath=Link}" />
+                            </Hyperlink>
+                        </Label>
+                    </DockPanel>
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+    </Border>
+</CustomWindow:StandardWindow>

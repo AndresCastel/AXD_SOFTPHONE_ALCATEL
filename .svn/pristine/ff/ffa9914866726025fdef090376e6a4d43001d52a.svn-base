@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axede.WPF.Softphone.Applications", "Axede.WPF.Softphone.Application\Axede.WPF.Softphone.Applications.csproj", "{302C6B88-9291-44F0-9DBD-B4A48C24FB24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Bussines Layer", "2. Bussines Layer", "{7FA06339-17DC-483E-B226-8B67B47B7BFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Framework", "3. Framework", "{D8B25645-477A-4707-8CBB-3755E2BA45D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axede.Validadores", "Axede.Validadores\Axede.Validadores.csproj", "{FEA681A2-81B9-408B-B2AA-A3E425AC8B50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axede.Utilidades", "Axede.Utilidades\Axede.Utilidades.csproj", "{E1B25921-2FF1-40DF-864D-52B16BADC6AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axede.Mensajes", "Axede.Mensajes\Axede.Mensajes.csproj", "{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation Layer", "1. Presentation Layer", "{D244AA20-4543-4942-931A-9FEC84E0060E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Instrumentacion", "5. Instrumentacion", "{6B38EAB6-D0F8-453C-9892-4B253FC5D139}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{396AE90D-5351-419B-AD7E-A56996EAB305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axede.Encryption", "Axede.Encryption\Axede.Encryption.csproj", "{87067753-84E9-4FA8-815F-05F0F1247574}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{302C6B88-9291-44F0-9DBD-B4A48C24FB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302C6B88-9291-44F0-9DBD-B4A48C24FB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302C6B88-9291-44F0-9DBD-B4A48C24FB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302C6B88-9291-44F0-9DBD-B4A48C24FB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA681A2-81B9-408B-B2AA-A3E425AC8B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA681A2-81B9-408B-B2AA-A3E425AC8B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA681A2-81B9-408B-B2AA-A3E425AC8B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA681A2-81B9-408B-B2AA-A3E425AC8B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1B25921-2FF1-40DF-864D-52B16BADC6AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B25921-2FF1-40DF-864D-52B16BADC6AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B25921-2FF1-40DF-864D-52B16BADC6AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B25921-2FF1-40DF-864D-52B16BADC6AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87067753-84E9-4FA8-815F-05F0F1247574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87067753-84E9-4FA8-815F-05F0F1247574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87067753-84E9-4FA8-815F-05F0F1247574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87067753-84E9-4FA8-815F-05F0F1247574}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{396AE90D-5351-419B-AD7E-A56996EAB305} = {D244AA20-4543-4942-931A-9FEC84E0060E}
+		{FEA681A2-81B9-408B-B2AA-A3E425AC8B50} = {D8B25645-477A-4707-8CBB-3755E2BA45D8}
+		{E1B25921-2FF1-40DF-864D-52B16BADC6AC} = {D8B25645-477A-4707-8CBB-3755E2BA45D8}
+		{A2F07A4C-D7C6-4F44-B88B-13AFF06FA0FC} = {D8B25645-477A-4707-8CBB-3755E2BA45D8}
+		{87067753-84E9-4FA8-815F-05F0F1247574} = {D8B25645-477A-4707-8CBB-3755E2BA45D8}
+		{302C6B88-9291-44F0-9DBD-B4A48C24FB24} = {396AE90D-5351-419B-AD7E-A56996EAB305}
+	EndGlobalSection
+EndGlobal

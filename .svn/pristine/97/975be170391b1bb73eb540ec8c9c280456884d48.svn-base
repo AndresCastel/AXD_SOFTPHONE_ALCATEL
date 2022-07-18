@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Research.DynamicDataDisplay.Common;
+using System.Windows.Media;
+using System.Configuration;
+using Axede.BussinesObject.Application.Enums;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class TraficPointCollection  : RingArray <TraficPoint>
+    {
+      
+
+        private static int iPuntosMuestreoGrafica
+        {
+            get
+            {
+                string _sPuntosMuestreoGrafica = ConfigurationManager.AppSettings["PuntosMuestreoGrafica"];
+                if (!string.IsNullOrEmpty(_sPuntosMuestreoGrafica))
+                {
+                    return Convert.ToInt32(_sPuntosMuestreoGrafica);
+                }
+                else
+                {
+                    return 300;
+                }
+            }
+        }
+
+        public TraficPointCollection()
+            : base(iPuntosMuestreoGrafica) // here i set how much values to show 
+        {    
+        }
+        
+        public string Protocol { get; set; }
+        public double TotalTraffic { get; set; }
+        public string Switch { get; set; }
+        public string IPSwitch { get; set; }
+        public string PortSwitch { get; set; }
+        public Color PortColor { get; set; }
+        public OrigenTrafico oOrigenTrafico { get; set; }
+
+    }
+
+
+}

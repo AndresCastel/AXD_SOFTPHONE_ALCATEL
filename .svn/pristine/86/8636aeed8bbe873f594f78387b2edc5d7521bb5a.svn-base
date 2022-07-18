@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0" />
+  </startup>
+  <appSettings>
+
+    <add key="ApplicationName" value="SoftPhoneAxedeAlcatel"/>
+
+    <add key="EncryptionKeyUI" value="3fjqbI1ADhInMWcU3/grvBfALrnqJ3u+qK3p8bg3/0I=" />
+    <add key="EncryptionArrayUI" value="s/I98dSzCAEcBODPwORC3Q==" />
+    <add key="XmlMensajes" value="Mensajes.xml" />
+    <add key="ClientSettingsProvider.ServiceUri" value="" />
+  </appSettings> 
+ <!--<configSections>     
+      <section name="videoconferencias" type="Axede.Utilidades.SeccionTareas,Axede.Utilidades" />
+    </configSections>
+ <videoconferencias>
+    <videoconferencia sip="192.168.102.107" nombre="RMX" />
+  </videoconferencias>-->
+</configuration>

@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Parameters;
+
+namespace Axede.WPF.Softphone.Applications.Utilidades
+{
+    public class Encryption
+    {
+        private int iBlockSize;
+        private ParametersWithIV pParameters;
+        private CbcBlockCipher cbcBlockCipher;
+
+        public Encryption(String sKey, String sVector)
+        {
+            try
+            {
+                cbcBlockCipher = new CbcBlockCipher(new AesEngine());
+                iBlockSize = cbcBlockCipher.GetBlockSize();
+                pParameters = new ParametersWithIV(new KeyParameter(Convert.FromBase64String(sKey)), Convert.FromBase64String(sVector));
+            }
+            catch (System.Exception eException)
+            {
+
+            }
+        }
+
+        public String Encrypt(String sPlainText)
+        {
+            byte[] bCipheredText;
+            int iNumBlocks = (sPlainText.Length / iBlockSize) + 1;
+            //int iNumBlocks = (int)Math.Ceiling((double)sPlainText.Length / iBlockSize) + 1;
+
+            byte[] bPlainText = new byte[iNumBlocks * iBlockSize];
+
+            cbcBlockCipher.Init(true, pParameters);
+
+            System.Array.Copy(Encoding.GetEncoding("iso-8859-1").GetBytes(sPlainText), 0, bPlainText, 0, sPlainText.Length);
+
+            bCipheredText = new byte[iNumBlocks * iBlockSize];
+
+            for (int i = 0; i < bCipheredText.Length; i += iBlockSize)
+            {
+                cbcBlockCipher.ProcessBlock(bPlainText, i, bCipheredText, i);
+            }
+
+            return Convert.ToBase64String(bCipheredText);
+        }
+
+        public String Decrypt(String sEncryptedText)
+        {
+            byte[] bCipheredText = null;
+            int iNumBlocks = (sEncryptedText.Length / iBlockSize) + 1;
+            //int iNumBlocks = (int)Math.Ceiling((double)sEncryptedText.Length / iBlockSize) + 1;
+
+            bCipheredText = Convert.FromBase64String(sEncryptedText);
+
+            cbcBlockCipher.Init(false, pParameters);
+
+            byte[] ciphertext2 = new byte[iNumBlocks * iBlockSize];
+            for (int i = 0; i < bCipheredText.Length; i += iBlockSize)
+            {
+                cbcBlockCipher.ProcessBlock(bCipheredText, i, ciphertext2, i);
+            }
+
+            return Encoding.GetEncoding("iso-8859-1").GetString(ciphertext2);
+        }
+    }
+}

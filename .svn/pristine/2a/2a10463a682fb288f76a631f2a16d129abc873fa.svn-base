@@ -1,0 +1,20 @@
+﻿
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.Global
+{
+    public class PROCEDIMIENTOS
+    {
+        public static string ValidaUsuario = "AXDP_ValidaUsuario";
+        public static string InsertaUsuario = "AXDP_InsertaUsuario";
+        public static string EliminaUsuario = "AXDP_EliminaUsuario";
+        public static string InsertaMovilSMS = "AXDP_InsertaMovilSMS";
+        public static string EliminaMovilSMS = "AXDP_EliminaMovilSMS";
+        public static string LineaBaseVigente = "AXDP_ValidaLineaBaseEjecucion";
+       
+    }
+}

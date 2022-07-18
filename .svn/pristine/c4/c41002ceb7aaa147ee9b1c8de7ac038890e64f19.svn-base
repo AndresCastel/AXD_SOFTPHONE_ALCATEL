@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Enums
+{
+    public enum TipoGrafico
+    {
+        TODOS=0,
+
+        PROTOCOLO=1,
+
+        INTERFACE=2
+
+    }
+}

@@ -1,0 +1,110 @@
+﻿
+//Desarrollado Por		: Andres Castellanos
+//Fecha de Creación		: 13/11/2013
+//Lenguaje Programación	: [C#]
+//Producto o sistema	    : SOFTPHONE
+//Empresa			        : Axede S.A
+//Cliente			        : Axede S.A
+//===================================================
+//Versión	Descripción
+//[1.0.0.0]
+//Desarrollo del Formulario Para filtrar grupos
+//===================================================
+//MODIFICACIONES:
+//===================================================
+//Ver.	 Fecha		Autor – Empresa 	Descripción
+
+//XX	dd/mm/aaaa	[Nombre Completo]	 [Razón del cambio realizado] 
+using System;
+using Microsoft.Practices.EnterpriseLibrary.Logging;
+
+namespace Log
+{
+
+
+    /// <summary>
+    /// Clase para manejar la escritura de LOG de forma optima, usa
+    /// el EnterpriseLibrary y permite escribir varios tipos de LOGS
+    /// en diferentes tipos de fuentes o archivos.
+    /// 
+    /// Todo se puede configurar en un archivo externo 
+    /// (archivo de configuración de la aplicación)    
+    /// </remarks>
+    public class LogManager
+    {
+        /// <summary>
+        /// Se encarga de colocar la severidad, prioridad y el mensaje a escribir
+        /// en el log
+        /// </summary>
+        private LogEntry logEntry;
+
+        /// <summary>
+        /// Cosntructor que recibe el nombre de la categorái, la categoria es la clasificación
+        /// que puede ser la aplicación o módulo donde se realiza el registro de LOG
+        /// </summary>
+        /// <param name="categoryName"></param>
+        public LogManager(string categoryName)
+        {
+            InicializeLogger(categoryName);
+        }
+
+        /// <summary>
+        /// Metodo que inicializa el log entry con la categoroa determinada
+        /// </summary>
+        /// <param name="categoryName"></param>
+        public void InicializeLogger(string categoryName)
+        {
+            logEntry = new LogEntry();
+            logEntry.Categories.Add(categoryName);
+        }
+
+        /// <summary>
+        /// Escribe un mensaje en el log de errores
+        /// </summary>
+        /// <param name="message"></param>
+        public void writeErrorLog(string message)
+        {
+            writeMessage(message, System.Diagnostics.TraceEventType.Error);
+        }
+
+        /// <summary>
+        /// Escribe un mensaje en el log de debug
+        /// </summary>
+        /// <param name="message"></param>
+        public void writeDebugLog(string message)
+        {
+            writeMessage(message, System.Diagnostics.TraceEventType.Verbose);
+        }
+
+        /// <summary>
+        /// Escribe un mensaje en el log de información
+        /// </summary>
+        /// <param name="message"></param>
+        public void writeInfoLog(string message)
+        {
+            writeMessage(message, System.Diagnostics.TraceEventType.Information);
+        }
+
+        /// <summary>
+        /// Escribe un mensaje en el log de warning
+        /// </summary>
+        /// <param name="message"></param>
+        public void writeWarningLog(string message)
+        {
+            writeMessage(message, System.Diagnostics.TraceEventType.Warning);
+        }
+
+        /// <summary>
+        /// Escribe un mensaje en el log respectivo, ya que recibe el tipo de evento
+        /// asociado con cada tipo de mensaje
+        /// </summary>
+        /// <param name="logMessage"></param>
+        /// <param name="eventType"></param>
+        private void writeMessage(string logMessage, System.Diagnostics.TraceEventType eventType)
+        {
+            logEntry.Message = logMessage;
+            logEntry.Severity = eventType;
+            Logger.Write(logEntry);
+        }
+    }
+}

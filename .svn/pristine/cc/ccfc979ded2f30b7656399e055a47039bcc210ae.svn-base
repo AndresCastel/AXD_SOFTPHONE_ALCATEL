@@ -1,0 +1,318 @@
+﻿using Axede.BussinesObject.Application;
+using Axede.Mensajes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using Axede.Validadores.WPF;
+using System.ComponentModel;
+
+namespace Axede.WPF.Softphone.Applications.GUI.User_Controls
+{
+    /// <summary>
+    /// Interaction logic for UC_AddContacto.xaml
+    /// </summary>
+    public partial class UC_AddContacto : UserControl
+    {
+        #region Definiciones
+        private static bool ApplicationIsInDesignMode
+        {
+            get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
+        }
+        private bool _BanderaEditarContacto;
+        private int _iContacto;
+
+        public int iContacto
+        {
+            get { return _iContacto; }
+            set { _iContacto = value; }
+        }
+
+        public bool BanderaEditarContacto
+        {
+            get { return _BanderaEditarContacto; }
+            set { _BanderaEditarContacto = value; }
+        }
+
+        #endregion
+
+        #region Eventos Formulario
+        public UC_AddContacto()
+        {
+            InitializeComponent();
+            CargarCombo();
+            LimpiarCampos();
+            if (!ApplicationIsInDesignMode)
+            {
+
+            }
+        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CargarRecursos();
+        }
+        #endregion
+
+        #region General
+        private void CargarRecursos()
+        {
+            lblNombre.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_LblNombre);
+            lblApellido.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_LblApellido);
+            lblTelefono.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_LblTelf);
+            lblExtencion.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_LblExten);
+            lblTipoTelefono.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_LblTipoTelf);
+            btnGuardar.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_btnGuardar);
+            btnLimpiar.Content = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.AddContact_btnLimpiar);
+        }
+        private void CargarCombo()
+        {
+            DtoTipoTelefono oDtoTipoTelefono = null;
+            List<DtoTipoTelefono> lstTipoTelefono = new List<DtoTipoTelefono>();
+
+            oDtoTipoTelefono = new DtoTipoTelefono();
+            oDtoTipoTelefono.Ide_TipoTelefono = (int)EnumTipoTelefono.Oficina;
+            oDtoTipoTelefono.NomTipoTelefono = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.General_MensajeSeleccion);
+            lstTipoTelefono.Insert(0, oDtoTipoTelefono);
+
+            oDtoTipoTelefono = new DtoTipoTelefono();
+            oDtoTipoTelefono.Ide_TipoTelefono = (int)EnumTipoTelefono.Casa;
+            oDtoTipoTelefono.NomTipoTelefono = EnumTipoTelefono.Casa.ToString();
+            lstTipoTelefono.Add(oDtoTipoTelefono);
+
+            oDtoTipoTelefono = new DtoTipoTelefono();
+            oDtoTipoTelefono.Ide_TipoTelefono = (int)EnumTipoTelefono.Mobil;
+            oDtoTipoTelefono.NomTipoTelefono = EnumTipoTelefono.Mobil.ToString();
+            lstTipoTelefono.Add(oDtoTipoTelefono);
+
+            oDtoTipoTelefono = new DtoTipoTelefono();
+            oDtoTipoTelefono.Ide_TipoTelefono = (int)EnumTipoTelefono.Oficina;
+            oDtoTipoTelefono.NomTipoTelefono = EnumTipoTelefono.Oficina.ToString();
+            lstTipoTelefono.Add(oDtoTipoTelefono);
+
+            if (lstTipoTelefono.Count > 0)
+            {
+                cmbTipoTelf.DisplayMemberPath = "NomTipoTelefono";
+                cmbTipoTelf.SelectedValuePath = "Ide_TipoTelefono";
+                cmbTipoTelf.ItemsSource = lstTipoTelefono;
+            }
+
+        }
+        private bool ValidarCampos()
+        {
+            string sMensaje = string.Empty;
+            sMensaje = string.Format(AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.AddContact_ReqCampo),
+                lblNombre.Content.ToString().Replace(":", "").Trim());
+            if (!txtNombre.ValidarRequerido(sMensaje))
+            {
+                return false;
+            }
+
+            sMensaje = string.Format(AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.AddContact_ReqCampo),
+                lblApellido.Content.ToString().Replace(":", "").Trim());
+            if (!txtApellidos.ValidarRequerido(sMensaje))
+            {
+                return false;
+            }
+
+            sMensaje = string.Format(AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.AddContact_ReqCampo),
+               lblTelefono.Content.ToString().Replace(":", "").Trim());
+            if (!txtTelefono.ValidarRequerido(sMensaje))
+            {
+                return false;
+            }
+
+            sMensaje = string.Format(AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.AddContact_ReqCampo),
+             lblTipoTelefono.Content.ToString().Replace(":", "").Trim());
+            if (!cmbTipoTelf.ValidarRequerido(sMensaje))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private void LimpiarCampos()
+        {
+            txtApellidos.Text = string.Empty;
+            txtExtencion.Text = string.Empty;
+            txtNombre.Text = string.Empty;
+            txtTelefono.Text = string.Empty;
+            if (cmbTipoTelf.ItemsSource != null)
+                cmbTipoTelf.SelectedIndex = 0;
+        }
+        private void GuardarContactos()
+        {
+            //ContactServerService.ContactTO oContacto = new ContactServerService.ContactTO();
+            //List<ContactServerService.ContactTO> lstContacto = new List<ContactServerService.ContactTO>();
+
+            //oContacto.Name = txtNombre.Text;
+            //oContacto.LastName = txtApellidos.Text;
+            //oContacto.PhoneNumber = txtTelefono.Text;
+            //oContacto.Extension = txtExtencion.Text;
+            //oContacto.IdeUser = UserSession.Instance.User.UserId;
+            //oContacto.Token = UserSession.Instance.User.Token;
+            //oContacto.PhoneType = ObtenerTipoTelefono();
+
+
+            //if (!BanderaEditarContacto)
+            //{
+            //    lstContacto.Add(oContacto);
+            //    oProxyCommunicatorService.InsContacto(lstContacto.ToArray());
+            //}
+            //else
+            //{ 
+            //    lstContacto.Add(oContacto);
+            //    oContacto.IdeContact = iContacto;
+            //    oProxyCommunicatorService.UpdContacto(lstContacto.ToArray()); 
+            //}
+
+        }
+        public void EditarContacto(DtoContactos oDtoContactoEditar)
+        {
+            BanderaEditarContacto = true;
+            txtNombre.Text = oDtoContactoEditar.Nombre;
+            txtApellidos.Text = oDtoContactoEditar.Apellido;
+            txtTelefono.Text = oDtoContactoEditar.Telefono;
+            txtExtencion.Text = oDtoContactoEditar.Extension;
+            cmbTipoTelf.SelectedIndex = ObtenerTipoTelefono(oDtoContactoEditar.PhoneType);
+            iContacto = oDtoContactoEditar.Ide_Contact;
+        }
+
+        private int ObtenerTipoTelefono(PhoneType phoneType)
+        {
+            if (phoneType == PhoneType.Home)
+            {
+                return (int)EnumTipoTelefono.Casa;
+            }
+            else if (phoneType == PhoneType.Mobile)
+            {
+                return (int)EnumTipoTelefono.Mobil;
+            }
+
+            return (int)EnumTipoTelefono.Oficina;
+        }
+        private PhoneType ObtenerTipoTelefono()
+        {
+
+            if ((int)cmbTipoTelf.SelectedValue == (int)EnumTipoTelefono.Casa)
+            {
+                return PhoneType.Home;
+            }
+            else if ((int)cmbTipoTelf.SelectedValue == (int)EnumTipoTelefono.Mobil)
+            {
+                return PhoneType.Mobile;
+            }
+
+            return PhoneType.Office;
+        }
+        #endregion
+
+        #region Botones Principales
+        private void btnGuardar_Click(object sender, RoutedEventArgs e)
+        {
+            if (ValidarCampos())
+            {
+                //GuardarContactos();
+                //LimpiarCampos();
+                //string sMensaje = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.InsContact_MsInsContact);
+                //EventDispatcher.Instance.DispatchShowMessagePopupEvent(sMensaje, MessageBoxImage.Information);
+            }
+        }
+
+        private void btnLimpiar_Click(object sender, RoutedEventArgs e)
+        {
+            LimpiarCampos();
+        }
+
+        #endregion
+
+        #region Eventos de control
+        private void txtExtencion_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (char ch in e.Text)
+            {
+                if (!(Char.IsNumber(ch)))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+        private void txtTelefono_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (char ch in e.Text)
+            {
+                if (!(Char.IsNumber(ch)))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+        private void txtApellidos_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (char ch in e.Text)
+            {
+                if (!(Char.IsLetter(ch)))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+        private void txtNombre_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (char ch in e.Text)
+            {
+                if (!(Char.IsLetter(ch)))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+        private void txtNombre_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+                    e.Command == ApplicationCommands.Cut ||
+                    e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+        private void txtApellidos_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+                    e.Command == ApplicationCommands.Cut ||
+                    e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtTelefono_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+                    e.Command == ApplicationCommands.Cut ||
+                    e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtExtencion_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+                    e.Command == ApplicationCommands.Cut ||
+                    e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+        #endregion
+    }
+}

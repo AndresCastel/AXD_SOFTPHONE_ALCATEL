@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Axede.WPF.Softphone.Applications.GUI.User_Controls.PanelVolumenLlamada_UC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="97" Width="75">
+    <Canvas Background="Transparent" Margin="0,53,0,0" HorizontalAlignment="Left" Width="186">
+       
+        <Border  Width="44" CornerRadius="20" Height="72"  Canvas.Left="26" Canvas.Top="-40">            
+                <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </Border.Effect>
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                    <GradientStop Color="#FF292929" Offset="0.314"/>
+                    <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Canvas HorizontalAlignment="Right" Width="67" Margin="-22,0,5,0">
+               
+
+                <Button x:Name="Btnmas" Style="{StaticResource GlassButtonSem}"  Background="White"   Click="BtnAccion_Click" Width="20" Height="20" Canvas.Left="40" Canvas.Top="-10" >
+
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                    </Button.Effect>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Btnmas.png" Height="20" Width="20" RenderTransformOrigin="0.475,0.453"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="Btnmute" Style="{StaticResource GlassButtonSem}"  Background="White"   Click="BtnAccion_Click"  Margin="0" Canvas.Left="37" Width="30" Height="30" Canvas.Top="20" >
+
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                    </Button.Effect>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Mute.png" Height="25" Width="25" RenderTransformOrigin="0.577,0.364"/>
+                    </StackPanel>
+                </Button>
+
+            </Canvas>
+        </Border>
+        <Button x:Name="Btnmenos" Background="White" Style="{StaticResource GlassButtonSem}"  Click="BtnAccion_Click" Margin="0" Width="20" Height="20" Canvas.Left="39" Canvas.Top="19"  >
+
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+            </Button.Effect>
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Btnmenos.png" Height="20" Width="20"/>
+            </StackPanel>
+        </Button>
+    </Canvas>
+</UserControl>

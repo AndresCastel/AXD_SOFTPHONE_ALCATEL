@@ -1,0 +1,129 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Axede.WPF.Softphone.Applications.PortSIP_Class;
+
+namespace Axede.WPF.Softphone.Applications.UtilControls.PopUp
+{
+    /// <summary>
+    /// Interaction logic for PopControl.xaml
+    /// </summary>
+    public partial class ControlVideo : Window
+    {
+        Point _Poin;
+        private bool _SIPinited = false;
+        private Session[] _CallSessionsG;
+        private PortSIPCore _core;
+        private bool _BanMoveWindow = false;
+        private int _CurrentlyLineG;
+        public ControlVideo()
+        {
+            InitializeComponent();
+        }
+        public ControlVideo(bool _SipInit, Point poi, ref PortSIPCore _ccore, Session[] _CallSessions, int _CurrentlyLine, int sessionId)
+        {
+            InitializeComponent();
+            _SIPinited = _SipInit;
+            _CurrentlyLineG = _CurrentlyLine;
+            _Poin = poi;
+            _core = _ccore;
+            _CallSessionsG = _CallSessions;
+            int errorCode = 0;
+            localVideoWindow.Visibility = Visibility.Hidden;
+          //  this.ContenidoUC.Content = UC;
+            UpdatePosition(poi);
+            _core.setRemoteVideoWindow(sessionId, remoteVideoWindow.Child.Handle);
+            _core.setLocalVideoWindow(localVideoWindow.Child.Handle);
+
+          //  _ccore.viewLocalVideo(true);
+           
+        }
+        public void UpdatePosition(Point poi)
+        {
+            if (!_BanMoveWindow)
+            {
+                this.Left = poi.X - 531;
+                this.Top = poi.Y;
+            }
+            _Poin = poi;
+        }
+
+        private void ValidatePosition()
+        {
+            double RestX = _Poin.X - this.RestoreBounds.X - 531;
+            double RestY = _Poin.Y - this.RestoreBounds.Y;
+            if ((RestX <= 20 && RestY <=50))
+            {
+                _BanMoveWindow = false;
+                UpdatePosition(_Poin);
+            }
+        }
+
+        private void Window_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            _BanMoveWindow = true;
+            ValidatePosition();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SIPinited == false)
+            {
+                return;
+            }
+
+            string buttonContent = (string)ButtonLocalVideo.Content;
+            if (buttonContent == "Local Video")
+            {
+                localVideoWindow.Visibility = Visibility.Visible;
+                _core.viewLocalVideo(true);
+                ButtonLocalVideo.Content = "Stop Local";
+            }
+            else
+            {
+                localVideoWindow.Visibility = Visibility.Hidden;
+                _core.viewLocalVideo(false);
+                localVideoWindow.Child.Refresh();
+
+                ButtonLocalVideo.Content = "Local Video";
+            }
+        }
+
+        private void ButtonSendVideo_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SIPinited == false)
+            {
+                return;
+            }
+            int rt = _core.startVideoSending(_CallSessionsG[_CurrentlyLineG].getSessionId(), true);
+            if (rt != 0)
+            {
+                MessageBox.Show("Start video sending failed.");
+            }
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Minimizar_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+    }
+}

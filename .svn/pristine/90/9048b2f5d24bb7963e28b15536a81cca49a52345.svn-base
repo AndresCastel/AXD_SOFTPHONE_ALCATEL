@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Axede.WPF.Softphone.Applications.GUI.User_Controls.Trasferencia_UC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="auto" Width="auto">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Digite el numero a transferir:"  Margin="5" Style="{DynamicResource LabelBold}" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="0"   Name="lblUsuario" Width="auto" TabIndex="0" SnapsToDevicePixels="False" HorizontalAlignment="Right" />
+            <TextBox  Style="{DynamicResource TextNormal}"  Margin="5"  Grid.Column="1" Text=""  Grid.Row="0"   Name="TextBoxTranferNumber" TabIndex="1" Width="130" />
+            <Button Grid.Column="2" Margin="5" Grid.Row="0" x:Name="ButtonTransfer" Grid.ColumnSpan="2"  Style="{StaticResource GlassButtonPrincipal}"  Background="White"   Click="ButtonTransfer_Click" Width="28" Height="28"  >
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="White" ShadowDepth="2"/>
+                </Button.Effect>
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Transfer.png" Height="20" Width="20"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.DtoExport
+{
+    public class DtoExportTrafico
+    {
+        public string Switch { get; set; }
+        public string IPSwitch { get; set; }
+        public string Interface { get; set; }
+        public string Protocolo { get; set; }
+        public string IPOrigen { get; set; }
+        public int PuertoProtocoloOrigen { get; set; }
+        public string IPDestino { get; set; }
+        public int PuertoProtocoloDestino { get; set; }
+        public DateTime Fecha { get; set; }
+        public double Datos { get; set; }
+
+    }
+}

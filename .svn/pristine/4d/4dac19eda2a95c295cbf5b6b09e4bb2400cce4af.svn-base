@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class Port
+    {
+        private int _NumeroPuerto;
+        private string _ProtocoloTransporte;
+
+        public int NumeroPuerto
+        {
+            get { return _NumeroPuerto; }
+            set { _NumeroPuerto = value; }
+        }
+        public string ProtocoloTransporte
+        {
+            get { return _ProtocoloTransporte; }
+            set { _ProtocoloTransporte = value; }
+        }
+
+    }
+}

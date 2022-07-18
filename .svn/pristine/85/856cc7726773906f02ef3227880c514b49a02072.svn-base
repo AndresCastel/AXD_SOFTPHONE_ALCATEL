@@ -1,0 +1,177 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Axede.WPF.Softphone.Applications.PortSIP_Class;
+
+namespace Axede.WPF.Softphone.Applications.UtilControls.PopUp
+{
+    /// <summary>
+    /// Interaction logic for PopControl.xaml
+    /// </summary>
+    public partial class ControlVideo : Window
+    {
+        Point _Poin;
+        double ancho = 0;
+        int a=0, s=0;
+        private bool _BanderaLocalTamaño = false;
+        private bool _BanderaRemoteTamaño = false;
+        public bool _SIPinited = false;
+        public Session[] _CallSessionsG;
+        private PortSIPCore _core;
+        private bool _BanMoveWindow = false;
+        public int _CurrentlyLineG;
+        public int _sessionId;
+        public ControlVideo()
+        {
+            InitializeComponent();
+        }
+        public ControlVideo(Point poi, ref PortSIPCore _ccore)
+        {
+            InitializeComponent();
+            _Poin = poi;
+            _core = _ccore;
+            localVideoWindow.Visibility = Visibility.Hidden;
+          //  this.ContenidoUC.Content = UC;
+            UpdatePosition(poi);
+          //  _core.setRemoteVideoWindow(_sessionId, remoteVideoWindow.Child.Handle);
+            _core.setLocalVideoWindow(localVideoWindow.Child.Handle);
+
+          //  _ccore.viewLocalVideo(true);
+           
+        }
+        public void SetVideoRemote(int _sessionId)
+        {
+            _BanderaRemoteTamaño = true;
+            _core.setRemoteVideoWindow(_sessionId, remoteVideoWindow.Child.Handle);
+        }
+
+        public void UpdatePosition(Point poi)
+        {
+            if (!_BanMoveWindow)
+            {
+                this.Left = poi.X - 531;
+                this.Top = poi.Y;
+            }
+            _Poin = poi;
+        }
+
+        private void ValidatePosition()
+        {
+            double RestX = _Poin.X - this.RestoreBounds.X - 531;
+            double RestY = _Poin.Y - this.RestoreBounds.Y;
+            if ((RestX <= 20 && RestY <=50))
+            {
+                _BanMoveWindow = false;
+                UpdatePosition(_Poin);
+            }
+        }
+
+        private void Window_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            _BanMoveWindow = true;
+            ValidatePosition();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SIPinited == false)
+            {
+                return;
+            }
+
+            string buttonContent = (string)lblNomButon.Content;
+            if (buttonContent == "Video Local")
+            {
+              //  CambioTamañoEfecto();
+                //if (_BanderaRemoteTamaño == false)
+                //{
+                //    localVideoWindow.Height = double.NaN;
+                //    localVideoWindow.Width = double.NaN;
+                //    System.Windows.Thickness tkc= new Thickness(26,29,19,80);
+                //    localVideoWindow.Margin = tkc;
+                //}
+                localVideoWindow.Visibility = Visibility.Visible;
+                _core.viewLocalVideo(true);
+                lblNomButon.Content = "Stop Local";
+                _BanderaLocalTamaño = true;
+               
+            }
+            else
+            {
+                localVideoWindow.Visibility = Visibility.Hidden;
+                _core.viewLocalVideo(false);
+                localVideoWindow.Child.Refresh();
+                lblNomButon.Content = "Video Local";
+                _BanderaLocalTamaño = false;
+            }
+            
+        }
+
+        private void CambioTamañoEfecto()
+        {
+            if (_BanderaLocalTamaño)
+            {
+                ancho = localVideoWindow.Width;
+                for (int i = (int)localVideoWindow.Width; i < ancho; i++)
+                {
+                    localVideoWindow.Width = i;
+                    localVideoWindow.Height = i;
+                    a = i;
+                }
+            }
+            else
+            {
+                for (int s = a; s > ancho; s--)
+                {
+                    localVideoWindow.Width = s;
+                    localVideoWindow.Height = s;
+                }
+            }
+        }
+
+        private void ButtonSendVideo_Click(object sender, RoutedEventArgs e)
+        {
+            string buttonContent = (string)lblNomButonRemote.Content;
+              if (buttonContent == "Enviar Video")
+              {
+              }
+              else
+              { 
+              
+              }
+            if (_SIPinited == false)
+            {
+                return;
+            }
+            int rt = _core.startVideoSending(_CallSessionsG[_CurrentlyLineG].getSessionId(), true);
+            if (rt != 0)
+            {
+                MessageBox.Show("Start video sending failed.");
+            }
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Minimizar_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+    }
+}

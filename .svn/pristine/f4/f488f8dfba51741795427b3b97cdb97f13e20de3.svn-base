@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Axede.WPF.Softphone.Applications.GUI.User_Controls.PrincipalContactos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:Axede.WPF.Softphone.Applications.GUI.Principal.Loading"
+             xmlns:Notify="clr-namespace:Axede.WPF.Softphone.Applications.UtilClass"
+             mc:Ignorable="d" 
+             Width="auto" Height="auto" Loaded="UserControl_Loaded">
+    <StackPanel Width="auto" Height="auto">
+        <Grid VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="btnFavoritos" Style="{DynamicResource ButtonContact_Style}"
+                                        Height="35" Width="80" Click="btnFavoritos_Click">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Favorites.png" 
+		                                     Width="20" Margin="0,2,0,-3"/>
+                    <TextBlock Text="Favoritos" FontSize="11" Foreground="White"/>
+                </StackPanel>
+            </Button>
+            <Separator Style="{DynamicResource SeparatorStyleHorizontal}"
+                                            Name="sepFavoritosH" Visibility="Collapsed"
+                                           Width="80" Margin="0,35,0,0"/>
+            <Separator Style="{DynamicResource SeparatorStyleVertical}" Grid.Column="1"
+                                            Name="sepFavoritosV" Margin="-30,0,5,0" Width="30">
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+            <Button Name="btnContactos" Grid.Column="1" 
+                                        Height="35" Width="80" Click="btnContactos_Click"
+                                        Style="{DynamicResource ButtonContact_Style}">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/administrar-contactos-rollover.png"  
+                                               Width="20" Margin="0,2,0,-3"/>
+                    <TextBlock Text="Contactos" FontSize="11" Foreground="White" />
+                </StackPanel>
+            </Button>
+            <Separator Style="{DynamicResource SeparatorStyleHorizontal}"
+                                            Name="sepContactH" Grid.Column="1" Visibility="Collapsed"
+                                           Width="80" Margin="0,35,0,0"/>
+            <Separator Style="{DynamicResource SeparatorStyleVertical}" Grid.Column="1"
+                                            Name="sepContactV" Margin="0,0,-50,0" Width="30" HorizontalAlignment="Right">
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+            <Button Name="btnAddContact" Grid.Column="2" 
+                                        Click="btnAddContact_Click" Width="80"
+                                        Style="{DynamicResource ButtonContact_Style}">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Ad.png" Stretch="None" 
+                                               Height="23" Margin="0,0,0,-3"/>
+                    <TextBlock Text="Add Contactos" FontSize="11" Foreground="White" />
+                </StackPanel>
+
+            </Button>
+            <Separator Style="{DynamicResource SeparatorStyleHorizontal}"
+                                            Name="sepAddContactH" Grid.Column="2" Visibility="Collapsed"
+                                           Width="80" Margin="0,35,0,0"/>
+        </Grid>
+        <Grid Name="grdBuscador" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="262.552"/>
+                <ColumnDefinition Width="37.448"/>
+                <ColumnDefinition Width="30*"/>
+            </Grid.ColumnDefinitions>
+            <Notify:SearchTextBox Height="auto" Width="auto" LabelText="Buscar..." Focusable="True" x:Name="txtContact"  PreviewTextInput="txtContact_PreviewTextInput"  Search="txtContact_Search" Grid.ColumnSpan="2"/>
+        </Grid>
+        <ContentControl Name="ctcContactos" Height="273" Margin="6,2,8,0"/>
+    </StackPanel>
+</UserControl>

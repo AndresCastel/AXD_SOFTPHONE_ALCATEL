@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoSwitch
+    {
+
+        private string _Nombre;
+        private string _Tipo;
+        private string _IP;
+        private string _Version;
+        private string _Estado;
+        private string _RunningFrom;
+        private string _Descripcion;
+        private string _Usuario;
+        private string _Clave;
+
+        public string Nombre
+        {
+            get { return _Nombre; }
+            set { _Nombre = value; }
+        }
+        public string Tipo
+        {
+            get { return _Tipo; }
+            set { _Tipo = value; }
+        }
+        public string IP
+        {
+            get { return _IP; }
+            set { _IP = value; }
+        }
+        public string Version
+        {
+            get { return _Version; }
+            set { _Version = value; }
+        }
+        public string Estado
+        {
+            get { return _Estado; }
+            set { _Estado = value; }
+        }
+        public string RunningFrom
+        {
+            get { return _RunningFrom; }
+            set { _RunningFrom = value; }
+        }
+        public string Descripcion
+        {
+            get { return _Descripcion; }
+            set { _Descripcion = value; }
+        }
+
+        public string Usuario
+        {
+            get { return _Usuario; }
+            set { _Usuario = value; }
+        }
+
+        public string Clave
+        {
+            get { return _Clave; }
+            set { _Clave = value; }
+        }
+
+    }
+}

@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoUnidadMedida
+    {
+        private string _Ide_UnidadMedida;
+        private string _Nom_UnidadMedida;
+
+        public string Ide_UnidadMedida
+        {
+            get { return _Ide_UnidadMedida; }
+            set { _Ide_UnidadMedida = value; }
+        }
+     
+        public string Nom_UnidadMedida
+        {
+            get { return _Nom_UnidadMedida; }
+            set { _Nom_UnidadMedida = value; }
+        }
+    }
+}

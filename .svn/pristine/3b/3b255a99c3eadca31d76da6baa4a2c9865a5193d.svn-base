@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.Mensajes
+{
+    public partial class CodigoMensaje
+    {
+        public const string General_TextoBotonAceptar = "General_TextoBotonAceptar";
+        public const string General_TextoBotonCancelar = "General_TextoBotonCancelar";
+    }
+}

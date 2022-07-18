@@ -1,0 +1,458 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wf ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    	xmlns:User_Controls="clr-namespace:Axede.WPF.Softphone.Applications.GUI.User_Controls" x:Class="Axede.WPF.Softphone.Applications.GUI.Principal.SoftphoneWPF"
+    	x:Name="_this"
+    Height="719" Width="468"
+    WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" MouseDown="Window_MouseDown" WindowStyle="None" Background="Transparent" AllowsTransparency="True" LocationChanged="_this_LocationChanged" Icon="/Axede.WPF.Softphone.Applications;component/InteraxionIcon.ico" Title="Axede - SoftPhone" ResizeMode="NoResize">
+
+    <Border CornerRadius="20" Padding="0,9,0,4" BorderThickness="5" RenderTransformOrigin="0.531,0.549" Margin="0,0,90,59" >
+
+        <Border.BorderBrush>
+            <LinearGradientBrush EndPoint="0,0" StartPoint="0.5,1.3" >
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                    <GradientStop Color="#FF747474" Offset="0.495"/>
+                    <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                <GradientStop Color="#FF292929" Offset="0.314"/>
+                <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid Margin="-5,-4,-53,53" >
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="5"/>
+            </Grid.Effect>
+            <Button x:Name="ButtonTransfer" ToolTip="Tranferencia"  Style="{StaticResource GlassButtonPrincipal}"  Background="White"   Click="ButtonTransfer_Click" Width="28" Height="28" Margin="252,160,146,400"   >
+
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="White" ShadowDepth="2"/>
+                </Button.Effect>
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Transfer.png" Margin="0,-1,0,0" Height="20" Width="20"/>
+                </StackPanel>
+            </Button>
+            <!--<TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="194,0,160,-29" MaxWidth="150" TextWrapping="Wrap" Height="45" Width="68"><Hyperlink NavigateUri="http://www.voip-sip-sdk.com/p_116-c-sharp-wpf-softphone-voip.html"><Run Text="Online Help"/></Hyperlink></TextBlock>-->
+            <ComboBox Canvas.Left="81" Canvas.Top="1" Height="23" Name="ComboBoxLines" SelectionChanged="ComboBoxLines_SelectedIndexChanged" Margin="15,162,191,403">
+                <ComboBox.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="White" ShadowDepth="2"/>
+                </ComboBox.Effect>
+            </ComboBox>
+            <Menu VerticalAlignment="Top" HorizontalAlignment="Right" Background="{x:Null}" Margin="0,-1,61,0">
+                <MenuItem  Height="24" Width="24" HorizontalAlignment="Right">
+                    <!--<MenuItem.Icon>
+                        <Image Source="/WPF_Softphone;component/Resources/help.png" />
+                    </MenuItem.Icon>-->
+                    <MenuItem Header="Open online documentation" HorizontalAlignment="Left" Click="HelpMenuItem_Click" />
+                    <MenuItem Header="About" HorizontalAlignment="Left" Click="AboutMenuItem_Click" />
+                </MenuItem>
+                <MenuItem  Height="33"  Width="35" Click="ExitMenuItem_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Exit.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+            <TabControl x:Name="tc" Margin="13,273,63,66" SelectedIndex="0" SelectionChanged="tc_SelectionChanged" Style="{DynamicResource TabControlGestion}">
+                <TabControl.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                </TabControl.Effect>
+
+                <TabItem Name="Tab_Teclado" >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Height="18" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/timthumb.png" />
+                            <TextBlock Text="Teclado" Margin="0,-4,0,0" VerticalAlignment="Center" FontWeight="Bold" Width="49"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <User_Controls:Botonera__UC x:Name="Botonera" Margin="0,0,1,7" />
+                </TabItem>
+                <TabItem Name="Tab_Contactos" >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Height="18" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Contacts.png" />
+                            <TextBlock Text="Contactos" Margin="0,-4,0,0" VerticalAlignment="Center" FontWeight="Bold" Width="63"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <DataGrid Height="148" Style="{DynamicResource GridCheckBox_Style}" Background="White" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300" Name="grvContactos" IsReadOnly="True" ItemsSource="{Binding}" AutoGenerateColumns="False" AllowDrop="False" Loaded="grvContactos_Loaded" Sorting="grvContactos_Sorting" >
+                        <DataGrid.Effect>
+                            <DropShadowEffect BlurRadius="10"
+                          ShadowDepth="5"/>
+                        </DataGrid.Effect>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn x:Name="CheckCol" CanUserSort="True" CanUserResize="False">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate x:Name="tpChkHeader">
+                                        <CheckBox x:Name="chkHeaderAll" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" IsChecked="{Binding IsSelected}" Margin="2"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="MyCheckBox" IsChecked="{Binding Checked}" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="MyCheckBox_Checked" Unchecked="MyCheckBox_Unchecked" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn    Binding="{Binding Nom_Ciudad}" Width="*">
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Name="Tab_VideoConferencia"  >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Height="18" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/webcam.png" />
+                            <TextBlock Text="Videoconferencia" Margin="0,-4,0,0" VerticalAlignment="Center" FontWeight="Bold" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button x:Name="BtnCrearSala" Margin="0,0,5,-9" Style="{StaticResource GlassButtonPrincipal}"  Background="#FF7E7E7E"   Click="BtnCrearSala_Click" Width="25" Height="25"   >
+
+                                <Button.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                                </Button.Effect>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/AgregarSala.png" Margin="0,-2,0,0" Height="23" Width="23"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnEliminarSala" HorizontalAlignment="Right" Margin="5,0,5,-9" Style="{StaticResource GlassButtonPrincipal}"  Background="#FF7E7E7E"   Click="BtnEliminarSala_Click" Width="25" Height="25"   >
+
+                                <Button.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                                </Button.Effect>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/EliminarSala.png" Margin="0,-2,0,0" Height="23" Width="23"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <DataGrid Height="156" Style="{DynamicResource GridCheckBox_Style}" Background="White" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300" x:Name="grvVideoConferencia" IsReadOnly="True" ItemsSource="{Binding}" AutoGenerateColumns="False" AllowDrop="False" Loaded="grvVideoConferencia_Loaded" Sorting="grvVideoConferencia_Sorting" Margin="12,10,11,0" >
+                            <DataGrid.Effect>
+                                <DropShadowEffect BlurRadius="10"
+                        			ShadowDepth="5"/>
+                            </DataGrid.Effect>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn CanUserReorder="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Button Style="{DynamicResource DataGridButton_Style}" ToolTip="Llamar sala..."  x:Name="btnLlamarSala" Click="LlamarSala_Click">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                                                    </Button.Effect>
+                                                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Phone.png" Stretch="None"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn    Binding="{Binding Nom_Ciudad}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Name="Tab_Configuracion"  >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Height="18" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/configuration.png" />
+                            <TextBlock Text="Configuración" Margin="0,-4,0,0" VerticalAlignment="Center" FontWeight="Bold" Width="79" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel>
+                        <Canvas>
+                            <Label FontWeight="Bold" Canvas.Left="2" Height="28" Name="label14" Width="68" Canvas.Top="-4" RenderTransformOrigin="-0.059,0.464">Altavoz:</Label>
+                            <ComboBox Canvas.Left="81" Canvas.Top="1" Height="23" Name="ComboBoxSpeakers" Width="238" SelectionChanged="ComboBoxSpeakers_SelectionChanged" Margin="0" />
+                            <Label FontWeight="Bold" Canvas.Top="24" Height="28" Name="label15" Width="79" Canvas.Left="2">Microfono:</Label>
+                            <ComboBox Canvas.Left="81" Canvas.Top="29" Height="23" Name="ComboBoxMicrophones" Width="237" SelectionChanged="ComboBoxMicrophones_SelectionChanged" Margin="0" />
+                            <Label FontWeight="Bold" Canvas.Left="1" Canvas.Top="52" Height="28" Name="label16" Width="79">Camara:</Label>
+                            <ComboBox Canvas.Left="81" Canvas.Top="57" Height="23" Name="ComboBoxCameras" Width="237" SelectionChanged="ComboBoxCameras_SelectionChanged" Margin="0" />
+                            <GroupBox  Canvas.Left="8" Canvas.Top="80" Height="69" Width="310">
+                                <GroupBox.Header>
+                                    <TextBlock Foreground="White" FontWeight="Bold" >Audio Codecs
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </GroupBox.Header>
+                                <GroupBox.Effect>
+                                    <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                                </GroupBox.Effect>
+                                <Canvas Margin="0,0,0,-12">
+                                    <CheckBox  Height="16" Name="checkBoxPCMU" Width="80" Checked="checkBoxPCMU_CheckedChanged" IsChecked="True">G.711 uLaw</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxPCMA" Width="80" Checked="checkBoxPCMA_CheckedChanged" IsChecked="True" Canvas.Left="164" Canvas.Top="33">G.711 aLaw</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxG729" Width="55" IsChecked="True" Checked="checkBoxG729_CheckedChanged" Canvas.Left="94" Canvas.Top="33">G.729</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxILBC" Width="80" Checked="checkBoxILBC_CheckedChanged" Canvas.Top="33">iLBC</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxGSM" Width="49" Checked="checkBoxGSM_CheckedChanged" Canvas.Left="249" Canvas.Top="16">GSM</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxAMR" Width="49" IsEnabled="True" Checked="checkBoxAMR_CheckedChanged" Canvas.Left="249">AMR</CheckBox>
+                                    <CheckBox  Height="16" Name="CheckBoxG722" Width="55" Checked="CheckBoxG722_CheckedChanged" Canvas.Left="164" Canvas.Top="16">G.722</CheckBox>
+                                    <CheckBox  Height="16" Name="CheckBoxSpeex" Width="55" Checked="CheckBoxSpeex_CheckedChanged" Canvas.Left="94" Canvas.Top="16">SPEEX</CheckBox>
+                                    <CheckBox  Height="16" Name="CheckBoxAMRwb" Width="80" Checked="CheckBoxAMRwb_CheckedChanged" IsEnabled="True" Canvas.Top="16">AMR-WB</CheckBox>
+                                    <CheckBox  Height="16" Name="CheckBoxSpeexWB" Width="80" Checked="CheckBoxSpeexWB_CheckedChanged" Canvas.Left="164">SPEEX-WB</CheckBox>
+                                    <CheckBox  Height="16" Name="CheckBoxG7221" Width="65" IsChecked="False" Checked="CheckBoxG7221_CheckedChanged" IsEnabled="True" Canvas.Left="94">G.722.1</CheckBox>
+                                </Canvas>
+                            </GroupBox>
+                            <GroupBox Canvas.Left="9" Canvas.Top="149" Height="38" Width="309">
+                                <GroupBox.Header>
+                                    <TextBlock Foreground="White" FontWeight="Bold" >Video Codecs
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </GroupBox.Header>
+                                <Canvas Margin="0,0,0,-12">
+                                    <CheckBox  Height="16" Name="checkBoxH263" Width="80" Checked="checkBoxH263_CheckedChanged">H.263</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxH2631998" Width="80" Checked="checkBoxH2631998_CheckedChanged" Canvas.Left="162">H.263-1998</CheckBox>
+                                    <CheckBox Height="16" Name="checkBoxH264" Width="54" IsChecked="True" Checked="checkBoxH264_CheckedChanged" Canvas.Left="94">H.264</CheckBox>
+                                    <CheckBox  Height="16" Name="checkBoxVP8" Width="50" Checked="checkBoxVP8_CheckedChanged" Canvas.Left="247">VP8</CheckBox>
+                                </Canvas>
+                            </GroupBox>
+                        </Canvas>
+                    </StackPanel>
+                </TabItem>
+
+            </TabControl>
+
+            <Border x:Name="BorderDisplay" Height="117" VerticalAlignment="Top" BorderBrush="#FFA5A5A5" BorderThickness="1" CornerRadius="20" Width="350" HorizontalAlignment="Center" Margin="15,38,61,0" Background="#EDFFFFFF">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="5"/>
+                </Border.Effect>
+                <Grid Margin="0,0,-1,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="textBlockRegStatus" HorizontalAlignment="Left" Height="24" Margin="8,8,0,0" TextWrapping="Wrap" Text="Offline" VerticalAlignment="Top" Width="82" FontSize="16" FontFamily="Times New Roman" Grid.ColumnSpan="2">
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="5"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock x:Name="textBlockIdentifier" HorizontalAlignment="Right" Height="16" Margin="0,8,8,0" TextWrapping="Wrap" Text="Identifier" VerticalAlignment="Top" TextAlignment="Right" FontSize="16" FontFamily="Times New Roman" Grid.ColumnSpan="2" Width="61">
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="5"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock x:Name="textBlockCallStateInfo" Margin="8,46,0,0" TextWrapping="Wrap" Text="Sin Conexion" TextAlignment="Center" FontSize="12" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Top" Width="341" Grid.ColumnSpan="2">
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="5"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock x:Name="textBlockDialingNumber"  Width="auto" Height="38" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Bottom" Margin="8,0,10,16" FontSize="12" FontFamily="Times New Roman" Grid.ColumnSpan="2"/>
+                    <ComboBox Name="cmb1"></ComboBox>
+                </Grid>
+
+            </Border>
+            <Image HorizontalAlignment="Left" Height="32" Margin="34,0,0,0" VerticalAlignment="Top" Width="86" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/logo-axede-grande.png">
+                <Image.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                </Image.Effect>
+            </Image>
+            <GroupBox Header="-----------------------------------------" Foreground="White" Margin="17,188,191,322">
+
+                <GroupBox.Background>
+                    <RadialGradientBrush 
+          GradientOrigin="0.5,0.5" 
+          Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="#C6C6C6" Offset="0" />
+                            <GradientStop Color="#FF747474" Offset="0.25" />
+                            <GradientStop Color="Gray" Offset="0.75" />
+                            <GradientStop Color="#FF747474" Offset="1" />
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>
+                </GroupBox.Background>
+                <StackPanel Height="auto" Width="auto" Orientation="Horizontal" Margin="0,-11,-2,-1"  >
+                    <Button x:Name="BtnLlamar"  Margin="5,0,5,-9" Style="{StaticResource GlassButtonPrincipal}"  Background="#FF7E7E7E"   Click="BtnLlamar_Click" Width="43" Height="43"   >
+
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/PhoneDialer.png" Margin="1,-1,0,0" Height="38" Width="38"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnColgar" ToolTip="Colgar" Margin="5,0,5,-9" Style="{StaticResource GlassButtonPrincipal}"  Background="#FF7E7E7E"   Click="BtnColgar_Click" Width="43" Height="43"  >
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/PhoneHangUp.png"   Margin="1,-1,0,0" Height="38" Width="38"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnMensaje" ToolTip="Mensaje"  Style="{StaticResource GlassButtonPrincipal}"  Background="#FF7E7E7E"  Margin="3,0,5,-9"  Click="BtnMensaje_Click" Width="43" Height="43" >
+
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/email.png" Margin="1,-1,0,0" Height="38" Width="38"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnVideo"  Style="{StaticResource GlassButtonPrincipal}" ToolTip="Video" Height="43" Width="43" Background="White" Margin="2,10,5,-3"   Click="BtnVideo_Click" RenderTransformOrigin="-10.733,1.033"  >
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-0.276"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Camara.png" Margin="-1,-2,0,0" Height="40" Width="40" RenderTransformOrigin="0.485,0.442"/>
+                        </StackPanel>
+                    </Button>
+                    <!--<Button x:Name="BtnResponder" Margin="5" Style="{StaticResource GlassButtonSem}"  Background="#FF7E7E7E"   Click="ButtonAnswer_Click" Canvas.Left="-16" Canvas.Top="20" Width="43" Height="43" >
+
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                    </Button.Effect>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/Mensaje.png" Height="40" Width="40"/>
+                    </StackPanel>
+                </Button>-->
+                </StackPanel>
+            </GroupBox>
+            <Separator Height="3" Background="Black" Margin="10,27,54,558"/>
+            <Separator Height="3" Background="White" Margin="10,28,54,557">
+                <Separator.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                </Separator.Effect>
+            </Separator>
+            <Separator Height="3" Background="White" Margin="10,532,54,53">
+                <Separator.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                </Separator.Effect>
+            </Separator>
+            <Separator Height="3" Background="Black" Margin="10,531,54,54"/>
+            <GroupBox Margin="12,541,62,-38">
+                <GroupBox.Header>
+                    <TextBlock Foreground="White" FontWeight="Bold" >Volumen
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </GroupBox.Header>
+                <GroupBox.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                </GroupBox.Effect>
+                <GroupBox.Background>
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0.5,1.3" >
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="#C6C6C6" Offset="0"/>
+                            <GradientStop Color="#FF747474" Offset="0.495"/>
+                            <GradientStop Color="Gray" Offset="0.81"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </GroupBox.Background>
+                <Grid >
+                    <Grid.RowDefinitions >
+                        <RowDefinition  Height="30" />
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="71"/>
+                        <ColumnDefinition Width="224" />
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label FontWeight="Bold" Content="Altavoz" Grid.Column="0" Grid.Row="0" Width="60"></Label>
+                    <Slider RenderTransformOrigin="0.501,0.622"  Grid.Column="1" Grid.Row="0"
+                	    x:Name="sliderSpeaker" Style="{DynamicResource SimpleSlider}" ValueChanged="sliderSpeaker_ValueChanged"
+                	    VerticalAlignment="Top" Height="21" Maximum="100" Minimum="0" Value="0"  Margin="10,14,15,0" Grid.RowSpan="2">
+                        <Slider.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </Slider.Effect>
+                        <Slider.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="-1" ScaleY="-1"/>
+                                <SkewTransform AngleX="0" AngleY="0"/>
+                                <RotateTransform Angle="179.863"/>
+                                <TranslateTransform X="-0.954" Y="-9.028"/>
+                            </TransformGroup>
+                        </Slider.RenderTransform>
+                        <Slider.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                <GradientStop Color="#FFF5A544" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Slider.Background>
+                    </Slider>
+
+
+                    <Label FontWeight="Bold" Grid.Column="0" Grid.Row="1" Content="Microfono" Height="32" VerticalAlignment="Top" Margin="0,0,0,-1" Width="69"/>
+                    <Slider RenderTransformOrigin="0.501,0.622"  Grid.Column="1" Grid.Row="1" Margin="10,14,15,-4"
+                		x:Name="sliderMicrophone" Style="{DynamicResource SimpleSlider}" 
+                		VerticalAlignment="Top" Height="21" Maximum="100" Minimum="0" Value="0"   ValueChanged="sliderMicrophone_ValueChanged">
+                        <Slider.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </Slider.Effect>
+                        <Slider.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="-1" ScaleY="-1"/>
+                                <SkewTransform AngleX="0" AngleY="0"/>
+                                <RotateTransform Angle="179.863"/>
+                                <TranslateTransform X="-0.954" Y="-9.028"/>
+                            </TransformGroup>
+                        </Slider.RenderTransform>
+                        <Slider.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                <GradientStop Color="#FFF5A544" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Slider.Background>
+                    </Slider>
+                    <Button x:Name="BtnMuteMicro" Grid.Column="2" Style="{StaticResource GlassButtonSem}"  Background="#FF7E7E7E"   Click="BtnMute_Click" Margin="3,24,40,8" Grid.RowSpan="2" >
+
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                        </Button.Effect>
+                        <StackPanel Orientation="Horizontal" >
+                            <Image x:Name="ImgMicro" Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/MicrofonoVerde.png" Margin="1,-1,0,0" Height="25" Width="25" RenderTransformOrigin="-6.4,0.7"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </GroupBox>
+            <GroupBox Foreground="White" Header="---------------------" Margin="240,188,65,322" >
+
+                <GroupBox.Background>
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0.5,1.3" >
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="#C6C6C6" Offset="0"/>
+                            <GradientStop Color="#FF747474" Offset="0.495"/>
+                            <GradientStop Color="Gray" Offset="0.81"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </GroupBox.Background>
+                <Canvas Margin="0,0,0,-12">
+                    <CheckBox Foreground="White" FontWeight="Bold" FontSize="10" Content="AA" Name="CheckBoxAA" Canvas.Top="-4">
+                        <CheckBox.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </CheckBox.Effect>
+                    </CheckBox>
+                    <CheckBox Foreground="White" FontWeight="Bold" Content="Conferencia" Name="CheckBoxConf" FontSize="10" Canvas.Top="11" Click="CheckBoxConf_Click">
+                        <CheckBox.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </CheckBox.Effect>
+                    </CheckBox>
+                    <CheckBox Foreground="White" FontWeight="Bold" Content="Llamada Espera" Name="CheckBoxLlamadaEspera" FontSize="10" Canvas.Top="26" Click="CheckBoxLlamadaEspera_Click">
+                        <CheckBox.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </CheckBox.Effect>
+                    </CheckBox>
+                    <CheckBox Foreground="White" FontWeight="Bold" Content="No Disponible" Name="CheckBoxDND" FontSize="10" Canvas.Top="41" >
+                        <CheckBox.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
+                        </CheckBox.Effect>
+                    </CheckBox>
+                </Canvas>
+            </GroupBox>
+        </Grid>
+    </Border>
+</Window>

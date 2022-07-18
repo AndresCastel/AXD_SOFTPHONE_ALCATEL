@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoProtocolo
+    {
+
+        private int _Ide_Protocolo;
+        private string _Nombre;
+        private int _Puerto;
+        private bool _Comun;
+        private string _TransportProtocol;
+
+        public int Ide_Protocolo
+        {
+            get { return _Ide_Protocolo; }
+            set { _Ide_Protocolo = value; }
+        }
+        public string Nombre
+        {
+            get { return _Nombre; }
+            set { _Nombre = value; }
+        }
+        public int Puerto
+        {
+            get { return _Puerto; }
+            set { _Puerto = value; }
+        }
+        public bool Comun
+        {
+            get { return _Comun; }
+            set { _Comun = value; }
+        }
+        public string TransportProtocol
+        {
+            get { return _TransportProtocol; }
+            set { _TransportProtocol = value; }
+        }
+    
+    }
+}

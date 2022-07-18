@@ -1,0 +1,62 @@
+﻿using Axede.BussinesObject.Application;
+using Axede.Utilidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Axede.Utilidades.Enums;
+using Axede.Mensajes;
+
+
+namespace Axede.Model.SoftPhone
+{
+    public partial class Model : IModel
+    {
+        public ResultadoOperacion ObtenerListaContactos(Contactos oContacto)
+        {
+            ResultadoOperacion oResultadoOperacion = new ResultadoOperacion();
+            List<DtoContactos> lstContacto = new List<DtoContactos>();
+            DtoUserInfo oUserInfo = new DtoUserInfo();
+            oContacto.Num_Extension = General.sUserName;
+            oUserInfo = ObtenerUserInfo(oContacto);
+
+            if (oUserInfo != null)
+            {
+                oContacto.Ide_User = oUserInfo.Ide_User;
+            }
+
+            try
+            {
+                lstContacto = oCommonDao.ObtenerContactos(oContacto.Ide_User, oContacto.Nom_Name);
+            }
+            catch (Exception)
+            {
+                oResultadoOperacion.oEstado = TipoRespuesta.Error;
+                string sMensaje = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.General_ErrorConsultandoBaseDatos);
+                oResultadoOperacion.Mensaje = sMensaje;
+                return oResultadoOperacion;
+            }
+
+            oResultadoOperacion.ListaEntidadDatos = lstContacto;
+
+            return oResultadoOperacion;
+        }
+
+        private DtoUserInfo ObtenerUserInfo(Contactos oContacto)
+        {
+            DtoUserInfo oUserInfo = new DtoUserInfo();
+
+            try
+            {
+                oUserInfo = oCommonDao.ObtenerInfoUser(oContacto);
+            }
+            catch (Exception ex)
+            {                
+                throw ex;
+            }
+
+            return oUserInfo;
+        }
+
+    }
+}

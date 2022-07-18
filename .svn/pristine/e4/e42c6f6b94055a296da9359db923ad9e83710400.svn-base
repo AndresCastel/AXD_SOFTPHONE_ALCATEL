@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConfiguracionMensaje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Usuario</Code>
+    <Language>ES</Language>
+    <Description>Usuario requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Clave</Code>
+    <Language>ES</Language>
+    <Description>Clave requerida...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>InsContact_MsInsContact</Code>
+    <Language>ES</Language>
+    <Description>Inserción Satisfatoria...</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Server</Code>
+    <Language>ES</Language>
+    <Description>SIPServer requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_ReqCampo</Code>
+    <Language>ES</Language>
+    <Description>El Campo {0} es requerido</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_ErrRequerido_Puerto</Code>
+    <Language>ES</Language>
+    <Description>Puerto requerido...</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblUsuario</Code>
+    <Language>ES</Language>
+    <Description>Usuario :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblAlias</Code>
+    <Language>ES</Language>
+    <Description>Alias :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonCancelar</Code>
+    <Language>ES</Language>
+    <Description>Cancelar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonAceptar</Code>
+    <Language>ES</Language>
+    <Description>Aceptar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblClave</Code>
+    <Language>ES</Language>
+    <Description>Clave :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblSIPServer</Code>
+    <Language>ES</Language>
+    <Description>SIP Server :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Login_lblPuerto</Code>
+    <Language>ES</Language>
+    <Description>Puerto :</Description>
+    <Modulo>Opciones</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AcercaDe_DerechosReservados</Code>
+    <Language>ES</Language>
+    <Description>Todos los derechos reservados...</Description>
+    <Modulo>AcercaDe</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AcercaDe_DescripcionProducto</Code>
+    <Language>ES</Language>
+    <Description>Descripción del Producto :</Description>
+    <Modulo>AcercaDe</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AcercaDe_Version</Code>
+    <Language>ES</Language>
+    <Description>Versión - </Description>
+    <Modulo>AcercaDe</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_ToolTipBotonAceptar</Code>
+    <Language>ES</Language>
+    <Description>Aceptar...</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+
+  <Mensaje>
+    <Code>Aplicacion_TituloAcercaDe</Code>
+    <Language>ES</Language>
+    <Description>Acerca De...</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Aplicacion_VerificandoInstanciaAplicacion</Code>
+    <Language>ES</Language>
+    <Description>Verificando Instancia de la Aplicación...</Description>
+    <Modulo>Seguridad</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>Aplicacion_InstanciaEnEjecucion</Code>
+    <Language>ES</Language>
+    <Description>Ya existe una instancia de la aplicación en ejecución....</Description>
+    <Modulo>Seguridad</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>TituloModalMensajes</Code>
+    <Language>ES</Language>
+    <Description>CEBP - Gestión Cobros</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+
+  <Mensaje>
+    <Code>General_TextoBotonOK_Msg</Code>
+    <Language>ES</Language>
+    <Description>Aceptar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonNO_Msg</Code>
+    <Language>ES</Language>
+    <Description>No</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonCANCEL_Msg</Code>
+    <Language>ES</Language>
+    <Description>Cancelar</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_TextoBotonYES_Msg</Code>
+    <Language>ES</Language>
+    <Description>Sí</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_ErrorConsultandoBaseDatos</Code>
+    <Language>ES</Language>
+    <Description>Error consultando datos en la Base de Datos...</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>General_MensajeSeleccion</Code>
+    <Language>ES</Language>
+    <Description>---Seleccione---</Description>
+    <Modulo>Seguridad</Modulo>
+  </Mensaje>
+  
+  <Mensaje>
+    <Code>General_TextoBotonYES_Msg</Code>
+    <Language>ES</Language>
+    <Description>Sí</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+
+
+  <Mensaje>
+    <Code>Aplicacion_ErrorDatosBasicos</Code>
+    <Language>ES</Language>
+    <Description>Datos de Conexión no válidos...</Description>
+    <Modulo>General</Modulo>
+  </Mensaje>
+ 
+  <!--MENSAJE CONTACTOS-->
+  <Mensaje>
+    <Code>EditContact_MsEditar</Code>
+    <Language>ES</Language>
+    <Description>El usuario no se puede editar</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_LblNombre</Code>
+    <Language>ES</Language>
+    <Description>Nombre :</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_LblApellido</Code>
+    <Language>ES</Language>
+    <Description>Apellido :</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_LblTelf</Code>
+    <Language>ES</Language>
+    <Description>Teléfono :</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_LblExten</Code>
+    <Language>ES</Language>
+    <Description>Extensión :</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_LblTipoTelf</Code>
+    <Language>ES</Language>
+    <Description>Tipo Teléfono :</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_btnGuardar</Code>
+    <Language>ES</Language>
+    <Description>Guardar</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>AddContact_btnLimpiar</Code>
+    <Language>ES</Language>
+    <Description>Limpiar</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+  
+  <Mensaje>
+    <Code>InsContact_MsInsContact</Code>
+    <Language>ES</Language>
+    <Description>Inserción Satisfatoria...</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+  <Mensaje>
+    <Code>UpdContact_MsUpdContact</Code>
+    <Language>ES</Language>
+    <Description>Modificación Satisfatoria...</Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+  
+    <Mensaje>
+    <Code>Contact_ErrExisteContacto</Code>
+    <Language>ES</Language>
+    <Description>El número de teléfono y extensión ya se encuentran registrados </Description>
+    <Modulo>Contactos</Modulo>
+  </Mensaje>
+
+
+  <!--FIN MENSAJES CONTACTO-->
+
+</ConfiguracionMensaje>

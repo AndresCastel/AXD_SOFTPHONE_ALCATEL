@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.Global
+{
+    public class VISTAS
+    {
+        public static string Usuarios = "AXDV_Usuarios";
+        public static string Roles = "AXDV_Roles";
+        public static string LineBase = "AXDV_LineBase";
+        public static string LineBaseTotal = "AXDV_LineBaseTotal";
+        public static string MovilesSMS = "AXDV_MovilesSMS";
+        public static string NivelesAlarma = "AXDV_NivelesAlarma";
+        public static string DetalleLineBase = "AXDV_DetalleLineaBase";
+    }
+}

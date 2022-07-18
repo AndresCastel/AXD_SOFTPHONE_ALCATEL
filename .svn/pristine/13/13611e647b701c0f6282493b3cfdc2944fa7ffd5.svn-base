@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoUsuario
+    {
+
+        private int _ide_Usuario;
+        private string _login_usuario;
+        private string _clave_usuario;
+        private int _ide_rol;
+        private string _nom_rol;
+        private Int32 _TotalRegistros;
+
+        public int Ide_Usuario
+        {
+            get { return _ide_Usuario; }
+            set { _ide_Usuario = value; }
+        }
+        public string Login_usuario
+        {
+            get { return _login_usuario; }
+            set { _login_usuario = value; }
+        }
+        public string Clave_usuario
+        {
+            get { return _clave_usuario; }
+            set { _clave_usuario = value; }
+        }
+        public int Ide_rol
+        {
+            get { return _ide_rol; }
+            set { _ide_rol = value; }
+        }
+        public string Nom_rol
+        {
+            get { return _nom_rol; }
+            set { _nom_rol = value; }
+        }
+        public Int32 TotalRegistros
+        {
+            get { return _TotalRegistros; }
+            set { _TotalRegistros = value; }
+        }
+    }
+}

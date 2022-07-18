@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoNivelAlarma
+    {
+
+        private string _Ide_Nivel;
+        private string _Nombre_Nivel;
+
+
+        public string Ide_Nivel
+        {
+            get { return _Ide_Nivel; }
+            set { _Ide_Nivel = value; }
+        }
+        public string Nombre_Nivel
+        {
+            get { return _Nombre_Nivel; }
+            set { _Nombre_Nivel = value; }
+        }
+    }
+}

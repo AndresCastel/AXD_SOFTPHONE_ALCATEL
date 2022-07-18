@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Dto
+{
+    public class DtoDetalleLineaBase
+    {
+        private int _Ide_Muestra;
+        private int _Id_linea_base;
+        private string _Ip_Switch;
+        private int _Puerto_Switch;
+        private string _IPDestino;
+        private int _PuertoDestino;
+        private string _IPOrigen;
+        private int _PuertoOrigen;
+        private double _DataLength;
+        private int _IPProtocol;
+        private DateTime _Fecha;
+        private bool _MatchTraffic = false;
+
+        public int Ide_Muestra
+        {
+            get { return _Ide_Muestra; }
+            set { _Ide_Muestra = value; }
+        }
+        public int Id_linea_base
+        {
+            get { return _Id_linea_base; }
+            set { _Id_linea_base = value; }
+        }
+        public string Ip_Switch
+        {
+            get { return _Ip_Switch; }
+            set { _Ip_Switch = value; }
+        }
+        public int Puerto_Switch
+        {
+            get { return _Puerto_Switch; }
+            set { _Puerto_Switch = value; }
+        }
+        public string IPDestino
+        {
+            get { return _IPDestino; }
+            set { _IPDestino = value; }
+        }
+        public int PuertoDestino
+        {
+            get { return _PuertoDestino; }
+            set { _PuertoDestino = value; }
+        }
+        public string IPOrigen
+        {
+            get { return _IPOrigen; }
+            set { _IPOrigen = value; }
+        }
+        public int PuertoOrigen
+        {
+            get { return _PuertoOrigen; }
+            set { _PuertoOrigen = value; }
+        }
+        public double DataLength
+        {
+            get { return _DataLength; }
+            set { _DataLength = value; }
+        }
+        public int IPProtocol
+        {
+            get { return _IPProtocol; }
+            set { _IPProtocol = value; }
+        }
+        public DateTime Fecha
+        {
+            get { return _Fecha; }
+            set { _Fecha = value; }
+        }
+        public bool MatchTraffic
+        {
+            get { return _MatchTraffic; }
+            set { _MatchTraffic = value; }
+        }
+    }
+}

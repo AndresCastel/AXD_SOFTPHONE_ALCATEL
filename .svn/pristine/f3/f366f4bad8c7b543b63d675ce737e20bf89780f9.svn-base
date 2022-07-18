@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Axede.BussinesObject.Application.Entities
+{
+    public class Usuario
+    {
+        private int _Ide_Usuario;
+        private string _Nom_Usuario;
+        private string _Apellido_Usuario;
+        private bool? _Estado_Usuario;
+        private bool? _Usuario_Dominio;
+        private string _Login;
+        private string _Clave_Usuario;
+        private string _ClaveNueva;
+
+
+        private int? _Ide_Seccional;
+        private string _Correo_Usuario;
+
+        public int Ide_Usuario
+        {
+            get { return _Ide_Usuario; }
+            set { _Ide_Usuario = value; }
+        }
+
+        public string Nom_Usuario
+        {
+            get { return _Nom_Usuario; }
+            set { _Nom_Usuario = value; }
+        }
+
+        public string Apellido_Usuario
+        {
+            get { return _Apellido_Usuario; }
+            set { _Apellido_Usuario = value; }
+        }
+
+        public bool? Estado_Usuario
+        {
+            get { return _Estado_Usuario; }
+            set { _Estado_Usuario = value; }
+        }
+
+        public string Login_Usuario
+        {
+            get { return _Login; }
+            set { _Login = value; }
+        }
+
+        public string Clave_Usuario
+        {
+            get { return _Clave_Usuario; }
+            set { _Clave_Usuario = value; }
+        }
+
+        public string ClaveNueva
+        {
+            get { return _ClaveNueva; }
+            set { _ClaveNueva = value; }
+        }
+
+        public bool? Usuario_Dominio
+        {
+            get { return _Usuario_Dominio; }
+            set { _Usuario_Dominio = value; }
+        }
+
+        public string Correo_Usuario
+        {
+            get { return _Correo_Usuario; }
+            set { _Correo_Usuario = value; }
+        }
+
+        private bool _Login_Administrador;
+
+        public bool Login_Administrador
+        {
+            get { return _Login_Administrador; }
+            set { _Login_Administrador = value; }
+        }
+
+        public int? Ide_Seccional
+        {
+            get { return _Ide_Seccional; }
+            set { _Ide_Seccional = value; }
+        }
+
+        private bool _RestablecerContraseña;
+
+        public bool RestablecerContraseña
+        {
+            get { return _RestablecerContraseña; }
+            set { _RestablecerContraseña = value; }
+        }
+    }
+}

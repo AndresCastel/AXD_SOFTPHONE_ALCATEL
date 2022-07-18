@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Axede.WPF.Softphone.Applications.UtilControls.Contactos.ControlsContact.UC_ListaContactos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:my="clr-namespace:Axede.WPF.Softphone.Applications.UtilControls.Loading"    
+             xmlns:Notify="clr-namespace:Axede.WPF.Softphone.Applications.UtilControls.Contactos.GridContact"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Orientation="Vertical">
+        <DataGrid Style="{DynamicResource GridNotifications_Style_Comu}" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                Height="270" 
+                Name="grvContactos"
+                Width="auto"
+                IsReadOnly="True"   
+                ItemsSource="{Binding}" 
+                AutoGenerateColumns="False" 
+                AllowDrop="False"
+                SelectionMode="Single"
+                  SelectionChanged="grvContactos_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CanUserReorder="False">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate x:Name="tpChkHeader">
+                            <CheckBox x:Name="chkHeaderAll" IsChecked="{Binding IsSelected}" Margin="2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <CheckBox Name="chkItemContact" IsChecked="{Binding IsSelected}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CanUserReorder="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button Name="btnInfoUser" 
+                                        Style="{DynamicResource DataGridButton_Style}" ToolTip="Información del Contacto"
+                                        Click="btnInfoUser_Click">
+                                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/info-user.png" 
+                                           Stretch="None"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CanUserReorder="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button Name="btnEditContact" 
+                                        Style="{DynamicResource DataGridButton_Style}" ToolTip="Editar Información del Contacto"
+                                        Click="btnEditContact_Click">
+                                    <Image Source="/Axede.WPF.Softphone.Applications;component/Themes/Images/edit_contact.png" 
+                                           Stretch="None"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTemplateColumn CanUserReorder="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Image Name="imgTipoTelefono" Source="{Binding TipoTelefono}"  
+                                    Stretch="Fill"  Margin="1,1,1,1" Height="16" Width="16" 
+                                    ToolTip="{Binding TipoTelefonoString}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                <DataGridTemplateColumn CanUserReorder="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button Name="btnEstPrecencia" Style="{DynamicResource DataGridButton_Estate}" 
+                                        ToolTip ="{Binding ToolTipEstado}"
+                                        HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <Image Stretch="Fill" Source="{Binding EstadoPresencia}" VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center" />
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <Notify:GridPersonalizada Header="Nombre"  Binding="{Binding NombreCompleto}" Width="170*"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <my:LoadingAnimation x:Name="UCLoading" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <my:LoadingAnimation.Style>
+                <Style TargetType="{x:Type my:LoadingAnimation}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </my:LoadingAnimation.Style>
+        </my:LoadingAnimation>
+        <!--<Notify:PageGridGestionUC x:Name="Paginador" HorizontalAlignment="Center" />-->
+    </StackPanel>
+</UserControl>

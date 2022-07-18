@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using Axede.Utilidades;
+using Axede.Utilidades.Enums;
+using Axede.DataObjects.Entities;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using EntLibContrib.Data.MySql;
+
+using Axede.BussinesObject.Application;
+
+
+
+namespace Axede.DataObjects.Interface
+{
+    public partial interface ICommonDao
+    {
+
+        MySqlDatabase Database { get; }
+
+        List<DtoContactos> ObtenerContactos(int iIdeUser, string sInitialLetter);
+
+        //bool ValidaUsuario(string oUsuario);
+        //DtoUsuario ObtieneDatosUsuario(string oUsuario);
+        //List<DtoUsuario> ObtieneListaUsuarios();
+        //List<DtoRol> ObtieneListaRoles();
+        //bool InsertaUsuario(string oUsuario, int oRol);
+        //bool EliminaUsuario(int oIdUsuario);
+        //DtoLineaBase ObtieneDatosLineaBase(LineaBase oLineaBase);
+        //List<DtoLineaBase> ObtieneListaLineaBase();
+        //List<DtoLineaBase> ObtieneListaLineaBasexSwitchxInterface(string sIp_switch, string iPortSwitch);
+        //List<DtoDetalleLineaBase> ObtieneListaDetalleLineaBasexIdentificador(LineaBase oLineaBase);
+        
+        //List<DtoMovilSMS> ObtieneListaMovilesSMS();
+        //List<DtoMovilSMS> ObtieneListaMovilesSMSxNivelAlarma(string sAlarma);
+        //List<DtoNivelAlarma> ObtieneListaNivelesAlarma();
+        //bool InsertaMovilSMS(string sNumeroMovil, string sAlarma);
+        //bool EliminaMovilSMS(string sNumeroMovil, string sAlarma);
+        //DtoMovilSMS ObtieneDatosMovilSMS(string sNumeroMovil, string sAlarma);
+        //bool VerificaLineaBaseVigente();
+    }
+}

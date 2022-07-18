@@ -1,0 +1,492 @@
+﻿using Axede.BussinesObject.Application;
+using Axede.Mensajes;
+using Axede.Utilidades;
+using Axede.WPF.Presenter.Softphone;
+using Axede.WPF.Softphone.Applications.UtilControls.ModalMessageBox;
+using Axede.WPF.View.Softphone;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Axede.WPF.Softphone.Applications.GUI.User_Controls
+{
+    /// <summary>
+    /// Interaction logic for UC_ListaContactos.xaml
+    /// </summary>
+    public partial class UC_ListaContactos : UserControl, INotifyPropertyChanged, IContacto_View
+    {
+        #region Definiciones
+        #region INotifyPropertyChanged Members
+
+        /// <summary>
+        /// Evento de acuerdo a la interfáz.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Método que permite hacer el raise del evento de cambio de propiedad.
+        /// </summary>
+        /// <param name="info">Propiedad que está cambiando</param>
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
+
+
+        #endregion
+
+        private bool _Mostrarfavoritos;
+        private ContextMenu oPopup = null;
+        public bool Mostrarfavoritos
+        {
+            get { return _Mostrarfavoritos; }
+            set { _Mostrarfavoritos = value; }
+        }
+        private ObservableCollection<DtoContactos> _ObserGrilla;
+        public ObservableCollection<DtoContactos> ObserGrilla
+        {
+            get { return _ObserGrilla; }
+            set { _ObserGrilla = value; }
+        }
+        private string _NomContacto;
+        private DtoContactos _dtoContactoSelec;
+        private Contacto_Presenter _Contacto_Presenter = null;
+        public DtoContactos DtoContactoSelec
+        {
+            get { return _dtoContactoSelec; }
+            set { _dtoContactoSelec = value; }
+        }
+        private DtoContactos _dtoEditarContacto;
+
+        public DtoContactos DtoEditarContacto
+        {
+            get { return _dtoEditarContacto; }
+            set
+            {
+                _dtoEditarContacto = value;
+                NotifyPropertyChanged("DtoEditarContacto");
+            }
+        }
+
+
+        public string NomContacto
+        {
+            get { return _NomContacto; }
+            set
+            {
+                _NomContacto = value;
+                NotifyPropertyChanged("NomContacto");
+            }
+        }
+       
+        private string _CampoOrden = "NombreCompleto";
+        private string _OrdenCampo = "Asc";
+        private string _Filtro = string.Empty;
+        private UC_InfoGeneralContacto ucInfoGeneral = null;
+        public string CampoOrden
+        {
+            get { return _CampoOrden; }
+            set { _CampoOrden = value; }
+        }
+        public string OrdenCampo
+        {
+            get { return _OrdenCampo; }
+            set { _OrdenCampo = value; }
+        }
+        private static bool ApplicationIsInDesignMode
+        {
+            get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
+        }
+        #endregion
+
+        #region Formulario
+        public UC_ListaContactos(bool _MostrarCheckBox = false)
+        {
+            InitializeComponent();
+            _Contacto_Presenter = new Contacto_Presenter(this);
+            if (!ApplicationIsInDesignMode)
+            {
+                if (_MostrarCheckBox)
+                {
+                    grvContactos.Columns[0].Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    grvContactos.Columns[0].Visibility = Visibility.Hidden;
+                }
+                if (ObserGrilla == null)
+                {
+                    ObserGrilla = new ObservableCollection<DtoContactos>();
+                    grvContactos.ItemsSource = ObserGrilla;
+                }
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        void ucInfoGeneral_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (((UC_InfoGeneralContacto)sender).CambioEstado)
+            {
+                LlenarGrillaContactos(Mostrarfavoritos);
+                oPopup.IsOpen = false;
+            }
+        }
+        #endregion
+
+        #region Metodos Privados
+
+        private void LlenarGrillaContactos(bool _Mostrarfavoritos)
+        {
+            if (NomContacto != null)
+            {
+                Contactos oContact = new Contactos();
+
+                oContact.Nom_Name = NomContacto;
+
+                oSearchContact = oContact;
+                _Contacto_Presenter.ObtenerListaContactos();
+            }
+
+            //if (NomContacto != null)
+            //{
+            //    PageInfoTO oPageInfoTO = new PageInfoTO();
+
+            //    oPageInfoTO.PageSizeField = 20;
+            //    oPageInfoTO.PageField = 1;
+            //    oPageInfoTO.InitialLetterField = NomContacto;
+            //    oPageInfoTO.UserId = UserSession.Instance.User.UserId;
+            //    oPageInfoTO.Token = UserSession.Instance.User.Token;
+
+            //    Axede.Interaxion.Communicator.ContactServerService.ContactTO[] _ContactTO = oProxyCommunicatorService.GetContactPageSize(oPageInfoTO);
+
+            //    DtoContactos oDtoContactos = null;
+            //    List<DtoContactos> lstContactos = new List<DtoContactos>();
+            //    if (_ContactTO != null)
+            //    {
+            //        foreach (Axede.Interaxion.Communicator.ContactServerService.ContactTO oContactoTO in _ContactTO)
+            //        {
+            //            oDtoContactos = new DtoContactos();
+
+            //            oDtoContactos.EstadoPresencia = PresenceState(oContactoTO.PresenceState);
+            //            oDtoContactos.ToolTipEstado = ToolTipEstadoPrecencia(oContactoTO.PresenceState);
+            //            oDtoContactos.Extension = oContactoTO.Extension;
+            //            oDtoContactos.NombreCompleto = oContactoTO.Name.ToUpper() + " " + oContactoTO.LastName.ToUpper();
+            //            oDtoContactos.Nombre = oContactoTO.Name.ToUpper();
+            //            oDtoContactos.Apellido = oContactoTO.LastName.ToUpper();
+            //            oDtoContactos.Telefono = oContactoTO.PhoneNumber;
+            //            oDtoContactos.TipoTelefono = ObtenerTipoTelefono(oContactoTO.PhoneType);
+            //            oDtoContactos.TipoTelefonoString = ObtenerToolTipTipoTelf(oContactoTO.PhoneType);
+            //            oDtoContactos.Ide_Contact = oContactoTO.IdeContact;
+            //            oDtoContactos.RecentContact = oContactoTO.RecentContact;
+            //            oDtoContactos.Ide_Contact = oContactoTO.IdeContact;
+            //            oDtoContactos.Ide_RecentContact = oContactoTO.IdeRecentContact;
+            //            oDtoContactos.Ide_User = oContactoTO.IdeUser;
+            //            oDtoContactos.PhoneType = oContactoTO.PhoneType;
+            //            oDtoContactos.ContactType = oContactoTO.ContactType;
+
+            //            lstContactos.Add(oDtoContactos);
+
+            //        }
+
+            //        stkContador.Visibility = Visibility.Visible;
+            //        if (!_Mostrarfavoritos)
+            //        {
+            //            CargaGrilla = lstContactos;
+            //            lblNumRegistros.Content = lstContactos.Count;
+            //        }
+            //        else
+            //        {
+            //            List<DtoContactos> lstContactoFavorito = (from obj in lstContactos
+            //                                                      where obj.RecentContact == true
+            //                                                      select obj).ToList();
+
+            //            CargaGrilla = lstContactoFavorito;
+            //            lblNumRegistros.Content = lstContactoFavorito.Count;
+            //        }
+
+            //    }
+            //    else
+            //    {
+            //        stkContador.Visibility = Visibility.Collapsed;
+            //        CargaGrilla = new List<DtoContactos>();
+            //    }
+            //}
+        }
+
+        private string ObtenerToolTipTipoTelf(PhoneType phoneType)
+        {
+            string sToolTip = string.Empty;
+
+            if (phoneType == PhoneType.Office)
+            {
+                sToolTip = "Oficina";
+            }
+            else if (phoneType == PhoneType.Home)
+            {
+                sToolTip = "Casa";
+            }
+            else if (phoneType == PhoneType.Mobile)
+            {
+                sToolTip = "Mobil";
+            }
+
+            return sToolTip;
+        }
+
+        private ImageSource ObtenerTipoTelefono(PhoneType _phoneType)
+        {
+            ImageSource _ImageTipoTelefono = null;
+            if (_phoneType == PhoneType.Office)
+            {
+                _ImageTipoTelefono = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/buildings.png"));
+            }
+            else if (_phoneType == PhoneType.Home)
+            {
+                _ImageTipoTelefono = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/Home.png"));
+            }
+            else if (_phoneType == PhoneType.Mobile)
+            {
+                _ImageTipoTelefono = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/mobile_basic_blue.png"));
+            }
+
+            return _ImageTipoTelefono;
+        }
+
+        private string ToolTipEstadoPrecencia(PresenceState presenceState)
+        {
+            string sToolTip = string.Empty;
+
+            if (presenceState == Axede.BussinesObject.Application.PresenceState.Available)
+            {
+                sToolTip = "Disponible";
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Away)
+            {
+                sToolTip = "Ausente";
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Busy)
+            {
+                sToolTip = "Ocupado";
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.InCall)
+            {
+                sToolTip = "En Llamada";
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Offline)
+            {
+                sToolTip = "No Disponible";
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.OfflineStatusContact)
+            {
+                sToolTip = "No Disponible";
+            }
+            else
+            {
+                sToolTip = "No Disponible";
+            }
+
+            return sToolTip;
+        }
+
+        private ImageSource PresenceState(PresenceState presenceState)
+        {
+            ImageSource _ImagePresencia = null;
+
+            if (presenceState == Axede.BussinesObject.Application.PresenceState.Available)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/presencia-activa-off.png"));
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Away)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/presencia-ausente-off.png"));
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Busy)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/presencia-inactiva-off.png"));
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.InCall)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/presencia-inactiva-off.png"));
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.Offline)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/presencia-desconectado-off.png"));
+            }
+            else if (presenceState == Axede.BussinesObject.Application.PresenceState.OfflineStatusContact)
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/desconectado-personal.png"));
+            }
+            else
+            {
+                _ImagePresencia = new BitmapImage(new Uri("pack://application:,,,/Axede.WPF.Softphone.Applications;component/Themes/Images/desconectado-personal.png"));
+            }
+
+            return _ImagePresencia;
+        }
+
+        #endregion
+
+        #region Loading Grilla
+
+        private EstadoProceso _EstadoProcesoCargueGrilla;
+        public EstadoProceso EstadoProcesoCargueGrilla
+        {
+            get
+            {
+                return _EstadoProcesoCargueGrilla;
+            }
+            set
+            {
+                _EstadoProcesoCargueGrilla = value;
+                OnStateChanged(value);
+            }
+        }
+        protected virtual void OnStateChanged(EstadoProceso newValue)
+        {
+            if (newValue == EstadoProceso.Disponible)
+            {
+                this.Dispatcher.BeginInvoke(
+                            (Action)(() => UCLoading.Visibility = System.Windows.Visibility.Collapsed));
+
+                this.Dispatcher.BeginInvoke(
+                    (Action)(() => grvContactos.Visibility = System.Windows.Visibility.Visible));
+
+
+            }
+            else
+            {
+                this.Dispatcher.BeginInvoke(
+                    (Action)(() => grvContactos.Visibility = System.Windows.Visibility.Collapsed));
+
+
+                this.Dispatcher.BeginInvoke(
+                (Action)(() => UCLoading.Visibility = System.Windows.Visibility.Visible));
+            }
+        }
+
+        #endregion
+
+        #region Metodos Publicos
+        public void ObtenerConatacto(bool _Favorito = false)
+        {
+            Mostrarfavoritos = _Favorito;
+            Task tsk = Task.Factory.StartNew(() =>
+            {
+                EstadoProcesoCargueGrilla = EstadoProceso.Ocupado;
+
+                Thread.Sleep(1000);
+
+                this.Dispatcher.BeginInvoke(
+                (Action)(() =>
+                {
+                    LlenarGrillaContactos(Mostrarfavoritos);
+                }));
+
+            });
+            tsk.ContinueWith(t =>
+            {
+
+                EstadoProcesoCargueGrilla = EstadoProceso.Disponible;
+
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+
+
+        }
+        #endregion
+
+        #region Controles
+        private void btnInfoUser_Click(object sender, RoutedEventArgs e)
+        {
+            oPopup = new System.Windows.Controls.ContextMenu();
+            DependencyObject obj = (DependencyObject)e.OriginalSource;
+            Button oBotonBase = (Button)obj;
+            oPopup.Style = (Style)System.Windows.Application.Current.FindResource("FilterContexMenu");
+
+            ucInfoGeneral = new UC_InfoGeneralContacto(DtoContactoSelec);
+            ucInfoGeneral.PropertyChanged += new PropertyChangedEventHandler(ucInfoGeneral_PropertyChanged);
+            oPopup.Items.Add(ucInfoGeneral);
+
+            oPopup.PlacementTarget = oBotonBase;
+            oPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Left;
+            oPopup.IsOpen = true;
+        }
+
+        private void grvContactos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DtoContactoSelec = grvContactos.SelectedItem as DtoContactos;
+        }
+
+        private void btnEditContact_Click(object sender, RoutedEventArgs e)
+        {
+            if (DtoContactoSelec.RecentContact)
+            {
+                DtoEditarContacto = DtoContactoSelec;
+            }
+            else
+            {
+                string sMensaje = AdministradorMensaje.Instance.GetMensajePorCodigo(Mensajes.CodigoMensaje.EditContact_MsEditar);
+            }
+        }
+        #endregion
+
+        #region Cargar Grilla
+        
+        #endregion
+
+        #region Iview
+        private List<DtoContactos> _CargaGrilla;
+        public List<DtoContactos> CargaGrilla
+        {
+            get { return _CargaGrilla; }
+            set
+            {
+                _CargaGrilla = value;
+                if (value != null && value.Count > 0)
+                {
+                    General.ToObservableCollection<DtoContactos>(_CargaGrilla, ObserGrilla);
+                }
+            }
+        }
+
+        private Contactos _oSearchContact;
+
+        public Contactos oSearchContact
+        {
+            get { return _oSearchContact; }
+            set { _oSearchContact = value; }
+        }
+
+        public string MuestraMensaje
+        {
+            set
+            {
+                string sTituloModal = AdministradorMensaje.Instance.GetMensajePorCodigo(CodigoMensaje.TituloModalMensajes);
+                MessageBoxModal.Show(General.ResolveOwnerWindow(), value, sTituloModal, MessageBoxButton.OK, MessageBoxImage.Error, true);
+
+            }
+        }
+        #endregion  
+    }
+}

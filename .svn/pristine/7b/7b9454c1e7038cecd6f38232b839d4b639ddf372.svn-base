@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using Axede.BussinesObject.Application;
+
+namespace Axede.WPF.Softphone.Applications.BussinesClass.Configuracion
+{
+    public class ConfiguracionContactos : ConfigurationElement
+    {
+
+        [ConfigurationProperty("nombreCompleto", IsRequired = true, IsKey = true)]
+        public string NombreCompleto
+        {
+            get
+            {
+                return (string)this["nombreCompleto"];
+            }
+            set
+            {
+                this["nombreCompleto"] = value;
+            }
+        }
+
+        [ConfigurationProperty("telefono", IsRequired = true)]
+        public string Telefono
+        {
+            get
+            {
+                return (string)this["telefono"];
+            }
+            set
+            {
+                this["telefono"] = value;
+            }
+        }
+
+        [ConfigurationProperty("extension", IsRequired = true)]
+        public string Extension
+        {
+            get
+            {
+                return (string)this["extension"];
+            }
+            set
+            {
+                this["extension"] = value;
+            }
+        }
+
+        [ConfigurationProperty("phoneType", IsRequired = true)]
+        public PhoneType PhoneType
+        {
+            get
+            {
+                return (PhoneType)this["phoneType"];
+            }
+            set
+            {
+                this["phoneType"] = value;
+            }
+        }
+    }
+}
+

@@ -1,0 +1,36 @@
+﻿<Window xmlns:User_Controls="clr-namespace:Axede.WPF.Softphone.Applications.GUI.User_Controls"  x:Class="Axede.WPF.Softphone.Applications.UtilControls.PopUp.ControlVideo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:wf ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        Title="PopControl" Height="497" Width="531" WindowStyle="None" Background="Transparent" AllowsTransparency="False" MouseUp="Window_MouseUp_1" >
+    <Grid Width="auto" Height="auto" Margin="0,0,2,0">
+        <Border CornerRadius="20"  BorderThickness="5" MouseDown="Border_MouseDown_1" Margin="10,0,10,10" >
+
+            <Border.BorderBrush>
+                <LinearGradientBrush EndPoint="0,0" StartPoint="0.5,1.3" >
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                        <GradientStop Color="#FF747474" Offset="0.495"/>
+                        <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                    <GradientStop Color="#FF292929" Offset="0.314"/>
+                    <GradientStop Color="#FFD0D0D0" Offset="0.81"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <WindowsFormsHost Name="localVideoWindow" Margin="35,279,296,80">
+            <wf:Panel  x:Name="localVideoPanel" />
+        </WindowsFormsHost>
+        <WindowsFormsHost Name="remoteVideoWindow" Margin="35,10,29,215">
+            <wf:Panel  x:Name="remoteVideoPanel" />
+        </WindowsFormsHost>
+        <Button Content="Local Video" Name="ButtonLocalVideo" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="137" Margin="57,427,0,0" Click="Button_Click"/>
+        <Button Content="Send Video" Name="ButtonSendVideo" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="137" Margin="271,427,0,0" Click="ButtonSendVideo_Click" />
+    </Grid>
+</Window>

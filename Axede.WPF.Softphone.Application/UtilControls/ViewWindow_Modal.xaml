@@ -1,0 +1,62 @@
+﻿<Window x:Class="Axede.WPF.Softphone.Applications.UtilControls.ViewWindow_Modal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="" Height="auto" Width="auto" x:Name="win" WindowStyle="None" ResizeMode="NoResize"   
+        SizeToContent="WidthAndHeight" SnapsToDevicePixels="False"  
+        AllowsTransparency="True" ShowInTaskbar="False"
+         Deactivated="win_Deactivated" 
+        WindowStartupLocation="CenterScreen" BorderThickness="15,15,15,15" Background="Transparent" SizeChanged="win_SizeChanged">
+    <Window.BitmapEffect>
+        <DropShadowBitmapEffect Color="Black">
+        </DropShadowBitmapEffect>
+    </Window.BitmapEffect>
+    <Border Name="border" BorderBrush="Gray" Background="White" 
+           BorderThickness="1" Padding="0" Margin="0" CornerRadius="4,4,4,4">
+        <StackPanel Margin="0" Name="stackpanel" Height="auto" Width="auto">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.984,0.983" StartPoint="0.025,0.024">
+                    <GradientStop Color="#FFA5A5A5" Offset="0"/>
+                    <GradientStop Color="#FFABABAB" Offset="1"/>
+                    <GradientStop Color="#FF3C3C3C" Offset="0.236"/>
+                    <GradientStop Color="#FFACACAC" Offset="0.675"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Grid MinHeight="30" Height="auto" MouseLeftButtonDown="Grid_MouseLeftButtonDown_drag">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Label Name="labelTitle" HorizontalContentAlignment="Right" Grid.Column="0" FontFamily="Calibri" FontSize="22" Foreground="Black" DockPanel.Dock="Top" Padding="0" Margin="15,8,1,1" FontWeight="Bold"></Label>
+                <Button Style="{StaticResource ButtonStyle}"  Grid.Column="1" Background="Crimson" BorderBrush="Gray" BorderThickness="5" FontWeight="Bold"
+                    Name="X" Width="18" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Click="CANCEL_Click" ForceCursor="False" Foreground="DimGray">X</Button>
+            </Grid>
+            <Separator Name="separador1" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="12" />
+                </Grid.ColumnDefinitions>
+                <ScrollViewer Grid.Column="1" Name="sb" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ContentControl Name="contentControl1" Margin="15,2" />
+                </ScrollViewer>
+            </Grid>
+            <Separator Name="separador2" />
+            <Grid MaxHeight="40" Name="GridButton" MinHeight="40" MinWidth="250">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="350" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="35" />
+                </Grid.RowDefinitions>
+                <Button  Grid.Column="1" Grid.Row="1" Height="25" Visibility="Collapsed" Name="Button_OK" HorizontalAlignment="Center" Width="100" Click="OK_Click">Aceptar</Button>
+                <Button   Grid.Column="1" Grid.Row="1" Height="25" Visibility="Collapsed" Name="Button_YES" HorizontalAlignment="Center" Width="100" Click="YES_Click">Sí</Button>
+                <Button   Grid.Column="1" Grid.Row="1" Height="25" Visibility="Collapsed" Name="Button_NO" HorizontalAlignment="Center" Width="100" Click="NO_Click">No</Button>
+                <Button  Grid.Column="1" Grid.Row="1" Height="25" Visibility="Collapsed" Name="Button_CANCEL" HorizontalAlignment="Center" Width="100" Click="CANCEL_Click">Cancelar</Button>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>
